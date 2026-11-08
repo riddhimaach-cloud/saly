@@ -563,6 +563,247 @@
     .mode-grid { grid-template-columns: repeat(3, 1fr); }
     .composer { grid-template-columns: 1fr; }
   }
+  /* ---------- Candidate preview: shadcn-style (zinc neutrals, blue primary) ---------- */
+  .cp {
+    --c-bg: #09090b; --c-card: #0c0c0e; --c-muted: #18181b; --c-accent: #1f1f23; --c-border: #27272a; --c-input: #27272a;
+    --c-fg: #fafafa; --c-mfg: #a1a1aa; --c-dim: #71717a; --c-primary: #3b82f6; --c-primary-h: #2563eb; --c-pfg: #ffffff;
+    --c-r-sm: 6px; --c-r: 8px; --c-r-lg: 12px;
+    position: fixed; inset: 0; z-index: 70; display: none; flex-direction: column; background: var(--c-bg); color: var(--c-fg); font-size: 14px;
+  }
+  .cp.show { display: flex; }
+  .cp .icon { width: 16px; height: 16px; }
+  /* button */
+  .c-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border-radius: var(--c-r); border: 1px solid transparent; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s, border-color 0.15s, color 0.15s; color: var(--c-fg); background: transparent; }
+  .c-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35); }
+  .c-btn:disabled { opacity: 0.5; pointer-events: none; }
+  .c-btn.default { background: var(--c-primary); color: var(--c-pfg); }
+  .c-btn.default:hover { background: var(--c-primary-h); }
+  .c-btn.outline { border-color: var(--c-input); background: var(--c-bg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+  .c-btn.outline:hover { background: var(--c-accent); }
+  .c-btn.secondary { background: var(--c-muted); }
+  .c-btn.secondary:hover { background: var(--c-accent); }
+  .c-btn.ghost:hover { background: var(--c-accent); }
+  .c-btn.sm { height: 32px; padding: 0 12px; font-size: 13px; border-radius: var(--c-r-sm); gap: 6px; }
+  .c-btn.sm .icon { width: 14px; height: 14px; }
+  .c-btn.lg { height: 40px; padding: 0 24px; }
+  .c-btn.on { color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }
+  /* badge */
+  .c-badge { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: var(--c-r-sm); font-size: 12px; font-weight: 500; border: 1px solid var(--c-border); color: var(--c-fg); white-space: nowrap; }
+  .c-badge.secondary { background: var(--c-muted); border-color: transparent; color: #d4d4d8; }
+  .c-badge.blue { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.25); color: #93c5fd; }
+  .c-badge.green { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.25); color: #86efac; }
+  .c-badge.red { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.25); color: #fca5a5; }
+  .c-badge.amber { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.25); color: #fcd34d; }
+  /* card */
+  .c-card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--c-r-lg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); }
+  .c-card-h { padding: 20px 24px; display: flex; flex-direction: column; gap: 6px; }
+  .c-card-t { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; margin: 0; }
+  .c-card-d { color: var(--c-mfg); font-size: 14px; line-height: 1.55; margin: 0; }
+  .c-card-c { padding: 0 24px 24px; }
+  .c-card-f { padding: 16px 24px; border-top: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .c-sep { height: 1px; background: var(--c-border); }
+  .c-label { font-size: 12px; font-weight: 500; color: var(--c-mfg); }
+  .c-progress { height: 6px; border-radius: 999px; background: var(--c-muted); overflow: hidden; }
+  .c-progress span { display: block; height: 100%; background: var(--c-primary); border-radius: 999px; transition: width 0.3s; }
+  .c-kbd { display: inline-flex; align-items: center; height: 20px; min-width: 20px; padding: 0 5px; border-radius: 4px; border: 1px solid var(--c-border); background: var(--c-muted); color: var(--c-mfg); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; justify-content: center; }
+  .c-tabs { display: inline-flex; align-items: center; height: 36px; padding: 3px; border-radius: var(--c-r); background: var(--c-muted); gap: 2px; }
+  .c-tab { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: var(--c-r-sm); border: 0; background: transparent; color: var(--c-mfg); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .c-tab:hover { color: var(--c-fg); }
+  .c-tab.active { background: var(--c-bg); color: var(--c-fg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--c-border); }
+  .c-tab .cnt { color: var(--c-dim); font-variant-numeric: tabular-nums; font-size: 12px; }
+  .c-tab .icon { width: 14px; height: 14px; color: var(--c-primary); }
+  .c-field { width: 100%; border: 1px solid var(--c-input); border-radius: var(--c-r); background: transparent; color: var(--c-fg); font: inherit; font-size: 14px; line-height: 1.6; padding: 10px 12px; outline: none; resize: vertical; transition: border-color 0.15s, box-shadow 0.15s; }
+  .c-field::placeholder { color: var(--c-dim); }
+  .c-field:focus { border-color: var(--c-primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+  .c-alert { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-radius: var(--c-r); border: 1px solid var(--c-border); font-size: 14px; }
+  .c-alert.warn { border-color: rgba(245, 158, 11, 0.35); color: #fde68a; }
+  .c-alert.warn .icon { color: #f59e0b; margin-top: 2px; }
+  .c-stats { display: grid; border: 1px solid var(--c-border); border-radius: var(--c-r); overflow: hidden; }
+  .c-stats > div { padding: 12px 14px; }
+  .c-stats > div + div { border-left: 1px solid var(--c-border); }
+  .c-stats .k { font-size: 12px; color: var(--c-mfg); display: flex; align-items: center; gap: 6px; }
+  .c-stats .k .icon { width: 13px; height: 13px; }
+  .c-stats .v { font-size: 18px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .c-stats .v small { font-size: 13px; font-weight: 400; color: var(--c-mfg); }
+  .c-avatar { width: 32px; height: 32px; border-radius: 999px; background: var(--c-muted); border: 1px solid var(--c-border); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #d4d4d8; flex-shrink: 0; }
+  .c-logo { width: 28px; height: 28px; border-radius: var(--c-r-sm); background: var(--c-primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+
+  .cp-bar { height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12.5px; color: var(--c-mfg); border-bottom: 1px solid var(--c-border); background: var(--c-muted); position: relative; }
+  .cp-bar .icon { width: 14px; height: 14px; }
+  .cp-bar .exit { position: absolute; right: 8px; top: 4px; height: 28px; }
+  .cp-screen { flex: 1; min-height: 0; display: none; }
+  .cp-screen.show { display: flex; }
+
+  /* welcome */
+  .cpw { flex: 1; display: grid; grid-template-columns: minmax(420px, 40%) 1fr; min-height: 0; }
+  .cpw-left { padding: 48px 56px; overflow: auto; display: flex; flex-direction: column; }
+  .cpw-org { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+  .cpw-hey { margin-top: 56px; color: var(--c-mfg); }
+  .cpw-title { font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; margin: 6px 0 0; }
+  .cpw-desc { color: var(--c-mfg); margin: 10px 0 0; line-height: 1.6; }
+  .cpw-left .c-stats { margin-top: 28px; grid-template-columns: repeat(3, 1fr); }
+  .cpw-actions { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+  .cpw-right { border-left: 1px solid var(--c-border); background: var(--c-card); overflow: auto; padding: 48px 56px; display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+  .cpw-right > * { max-width: 760px; width: 100%; }
+  .cpw-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .cpw-steps li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--c-border); color: #e4e4e7; }
+  .cpw-steps li:first-child { border-top: 0; padding-top: 0; }
+  .cpw-steps .n { width: 22px; height: 22px; border-radius: 999px; border: 1px solid var(--c-border); background: var(--c-muted); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--c-mfg); flex-shrink: 0; }
+  .cpw-secs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .cpw-sec { padding: 14px 16px; border-radius: var(--c-r); border: 1px solid var(--c-border); background: var(--c-bg); }
+  .cpw-sec .t { font-weight: 600; margin-top: 10px; }
+  .cpw-sec .d { color: var(--c-mfg); font-size: 13px; margin-top: 2px; }
+
+  /* exam shell */
+  .x { flex: 1; display: grid; grid-template-rows: 56px 1fr 56px; min-height: 0; }
+  .x-top { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid var(--c-border); }
+  .x-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .x-brand .t { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .x-brand .d { color: var(--c-mfg); font-size: 12px; }
+  .x-right { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+  .x-timer { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border-radius: var(--c-r-sm); border: 1px solid var(--c-border); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .x-timer .icon { width: 14px; height: 14px; color: var(--c-mfg); }
+  .x-timer.low { color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); }
+  .x-timer.low .icon { color: #f59e0b; }
+  .x-body { display: grid; grid-template-columns: 264px 1fr; min-height: 0; }
+  .x-rail { border-right: 1px solid var(--c-border); background: var(--c-card); overflow: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .x-grp-h { display: flex; align-items: center; justify-content: space-between; height: 32px; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--c-dim); }
+  .x-grp-h .cnt { font-variant-numeric: tabular-nums; }
+  .x-item { width: 100%; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 8px; border: 0; border-radius: var(--c-r-sm); background: transparent; color: var(--c-mfg); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+  .x-item:hover { background: var(--c-accent); color: var(--c-fg); }
+  .x-item.cur { background: var(--c-accent); color: var(--c-fg); font-weight: 500; }
+  .x-item .st { width: 16px; height: 16px; border-radius: 999px; border: 1.5px solid #3f3f46; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .x-item .st svg { width: 10px; height: 10px; stroke-width: 3.2; opacity: 0; }
+  .x-item.ans .st { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+  .x-item.ans .st svg { opacity: 1; }
+  .x-item .t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .x-item .p { font-size: 12px; color: var(--c-dim); font-variant-numeric: tabular-nums; }
+  .x-item .fl { display: none; color: #f59e0b; }
+  .x-item .fl svg { width: 13px; height: 13px; }
+  .x-item.flag .fl { display: inline-flex; }
+  .x-item.flag .p { display: none; }
+  .x-rail-foot { margin-top: auto; padding: 14px; border: 1px solid var(--c-border); border-radius: var(--c-r); background: var(--c-bg); }
+  .x-rail-foot .k { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
+  .x-rail-foot .k span { color: var(--c-mfg); }
+  .x-main { overflow: auto; min-height: 0; padding: 24px; }
+  .x-main.full { overflow: hidden; padding: 16px; }
+  .x-col { max-width: 760px; margin: 0 auto; }
+  .x-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .x-choices { display: flex; flex-direction: column; gap: 8px; }
+  .x-choice { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; border-radius: var(--c-r); border: 1px solid var(--c-border); background: transparent; color: var(--c-fg); font: inherit; font-size: 14px; text-align: left; cursor: pointer; transition: background 0.12s, border-color 0.12s; }
+  .x-choice:hover { background: var(--c-muted); }
+  .x-choice .ind { width: 16px; height: 16px; border-radius: 999px; border: 1px solid #52525b; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .x-choice.multi .ind { border-radius: 4px; }
+  .x-choice .ind svg { width: 11px; height: 11px; stroke-width: 3.2; opacity: 0; }
+  .x-choice .txt { flex: 1; }
+  .x-choice.sel { border-color: var(--c-primary); background: rgba(59, 130, 246, 0.06); }
+  .x-choice.sel .ind { border-color: var(--c-primary); }
+  .x-choice.sel:not(.multi) .ind::after { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--c-primary); }
+  .x-choice.multi.sel .ind { background: var(--c-primary); color: #fff; }
+  .x-choice.multi.sel .ind svg { opacity: 1; }
+  .x-count { text-align: right; margin-top: 8px; font-size: 12px; color: var(--c-dim); }
+
+  /* section intro */
+  .x-intro { display: flex; justify-content: center; padding-top: 6vh; }
+  .x-intro .c-card { width: 100%; max-width: 560px; }
+  .x-intro .c-stats { grid-template-columns: repeat(3, 1fr); }
+  .x-qlist { margin-top: 16px; border: 1px solid var(--c-border); border-radius: var(--c-r); overflow: hidden; }
+  .x-qlist > div { display: flex; align-items: center; gap: 12px; padding: 10px 14px; font-size: 13px; }
+  .x-qlist > div + div { border-top: 1px solid var(--c-border); }
+  .x-qlist .n { color: var(--c-dim); width: 16px; font-variant-numeric: tabular-nums; }
+  .x-qlist .t { flex: 1; }
+
+  /* coding */
+  .x-split { height: 100%; display: grid; grid-template-columns: minmax(340px, 0.9fr) 1.1fr; gap: 16px; }
+  .x-split > .c-card, .x-rp > .c-card { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  .x-scroll { overflow: auto; min-height: 0; flex: 1; }
+  .x-prob p { color: #d4d4d8; line-height: 1.65; margin: 0 0 16px; }
+  .x-ex { margin-top: 12px; }
+  .x-ex pre { margin: 6px 0 0; padding: 12px 14px; border-radius: var(--c-r); background: var(--c-muted); border: 1px solid var(--c-border); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.7; white-space: pre-wrap; color: #e4e4e7; }
+  .x-ex pre b { color: var(--c-dim); font-weight: 400; }
+  .x-cons { margin: 6px 0 0; padding-left: 18px; color: var(--c-mfg); font-size: 13px; line-height: 1.8; }
+  .x-ide-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--c-border); }
+  .x-ed { flex: 1; display: flex; min-height: 0; overflow: hidden; background: var(--c-bg); }
+  .x-gut { padding: 14px 10px 14px 14px; text-align: right; color: #52525b; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 1.7; user-select: none; overflow: hidden; white-space: pre; min-width: 44px; border-right: 1px solid var(--c-border); }
+  .x-code { flex: 1; padding: 14px 16px; border: 0; outline: none; resize: none; background: transparent; color: #e4e4e7; caret-color: var(--c-primary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 1.7; tab-size: 4; white-space: pre; overflow: auto; }
+  .x-res { border-top: 1px solid var(--c-border); max-height: 240px; overflow: auto; }
+  .x-res-h { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; }
+  .x-res-h .t { font-size: 13px; font-weight: 600; }
+  .x-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .x-table th { text-align: left; font-weight: 500; color: var(--c-mfg); padding: 8px 14px; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); background: var(--c-muted); font-size: 12px; }
+  .x-table td { padding: 9px 14px; border-bottom: 1px solid var(--c-border); }
+  .x-table tr:last-child td { border-bottom: 0; }
+  .x-table td.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #e4e4e7; }
+  .x-table td.r, .x-table th.r { text-align: right; color: var(--c-mfg); font-variant-numeric: tabular-nums; }
+  .x-spin { display: inline-block; width: 12px; height: 12px; border-radius: 999px; border: 2px solid #3f3f46; border-top-color: var(--c-primary); animation: spin 0.8s linear infinite; vertical-align: -2px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* roleplay */
+  .x-rp { height: 100%; display: grid; grid-template-columns: minmax(320px, 380px) 1fr; gap: 16px; }
+  .x-brief-sec { padding: 16px 24px; border-top: 1px solid var(--c-border); }
+  .x-brief-sec p { margin: 6px 0 0; color: #d4d4d8; line-height: 1.6; }
+  .x-goals { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .x-goals li { display: flex; align-items: center; gap: 10px; color: var(--c-mfg); }
+  .x-goals .ind { width: 16px; height: 16px; border-radius: 4px; border: 1px solid #52525b; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .x-goals .ind svg { width: 11px; height: 11px; stroke-width: 3.2; opacity: 0; }
+  .x-goals li.ok { color: var(--c-fg); }
+  .x-goals li.ok .ind { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+  .x-goals li.ok .ind svg { opacity: 1; }
+  .x-chat-h { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--c-border); }
+  .x-chat-h .nm { font-weight: 600; }
+  .x-chat-h .rl { color: var(--c-mfg); font-size: 12px; }
+  .x-msgs { flex: 1; overflow: auto; min-height: 0; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .x-msg { display: flex; gap: 10px; max-width: 80%; }
+  .x-msg .bub { padding: 10px 14px; border-radius: var(--c-r); line-height: 1.55; }
+  .x-msg.them .bub { background: var(--c-muted); border: 1px solid var(--c-border); }
+  .x-msg.me { margin-left: auto; }
+  .x-msg.me .bub { background: var(--c-primary); color: #fff; }
+  .x-msg .who { font-size: 12px; color: var(--c-dim); margin-bottom: 4px; }
+  .x-typing { display: inline-flex; gap: 4px; padding: 14px; }
+  .x-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--c-mfg); animation: xDot 1s infinite ease-in-out; }
+  .x-typing i:nth-child(2) { animation-delay: 0.15s; } .x-typing i:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes xDot { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+  .x-sys { align-self: center; font-size: 12px; color: var(--c-mfg); }
+  .x-comp { border-top: 1px solid var(--c-border); padding: 12px; }
+  .x-comp-row { display: flex; gap: 8px; align-items: flex-end; }
+  .x-comp textarea { min-height: 40px; max-height: 140px; resize: none; }
+  .x-comp .c-btn { height: 40px; }
+  .x-comp-f { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--c-dim); }
+
+  /* footer */
+  .x-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; border-top: 1px solid var(--c-border); }
+  .x-hint { display: flex; align-items: center; gap: 14px; color: var(--c-dim); font-size: 12px; }
+  .x-hint span { display: inline-flex; align-items: center; gap: 4px; }
+  .x-nav { display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* dialogs, done */
+  .cp .overlay { z-index: 75; background: rgba(0, 0, 0, 0.75); }
+  .cp .modal { background: var(--c-bg); border: 1px solid var(--c-border); border-radius: var(--c-r-lg); padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+  .cp .modal h3 { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
+  .cp .modal .muted { color: var(--c-mfg); font-size: 14px; line-height: 1.55; }
+  .cp .modal .actions { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
+  .x-sum { margin-top: 16px; border: 1px solid var(--c-border); border-radius: var(--c-r); overflow: hidden; }
+  .x-sum > div { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; }
+  .x-sum > div + div { border-top: 1px solid var(--c-border); }
+  .sys-list { margin: 16px 0 0; border: 1px solid var(--c-border); border-radius: var(--c-r); overflow: hidden; }
+  .sys-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+  .sys-row + .sys-row { border-top: 1px solid var(--c-border); }
+  .sys-row .meta { flex: 1; }
+  .sys-row .t { font-weight: 500; }
+  .sys-row .d { color: var(--c-mfg); font-size: 12px; }
+  .sys-st { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .sys-st.wait { border: 2px solid #3f3f46; border-top-color: var(--c-primary); animation: spin 0.8s linear infinite; }
+  .sys-st.ok { background: var(--c-primary); color: #fff; }
+  .sys-st.ok svg { width: 10px; height: 10px; stroke-width: 3.2; }
+  .cp .hint { color: var(--c-dim); font-size: 12px; margin-top: 10px; }
+  .cpd { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 10vh 24px 24px; }
+  .cpd .c-card { width: 100%; max-width: 480px; }
+  .cpd-ic { width: 40px; height: 40px; border-radius: 999px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; display: inline-flex; align-items: center; justify-content: center; }
+  .cpd-ic svg { width: 20px; height: 20px; stroke-width: 2.6; }
+  .cpd .c-stats { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 1100px) { .x-body { grid-template-columns: 1fr; } .x-rail { display: none; } .c-tab .cnt { display: none; } }
+  @media (max-width: 1000px) { .cpw { grid-template-columns: 1fr; } .cpw-right { border-left: 0; border-top: 1px solid var(--c-border); } .cpw-secs { grid-template-columns: 1fr; } }
+
 </style>
 </head>
 <body>
@@ -576,6 +817,8 @@
     <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
     <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></symbol>
     <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -625,7 +868,7 @@
   </nav>
   <div class="topbar-right">
     <span class="saved"><svg class="icon"><use href="#i-cloud"/></svg><span id="savedText">Saved</span></span>
-    <button class="icon-btn" title="Preview as candidate"><svg class="icon"><use href="#i-eye"/></svg></button>
+    <button class="icon-btn" id="previewBtn" title="Preview as candidate"><svg class="icon"><use href="#i-eye"/></svg></button>
     <div class="split-btn">
       <button id="publishBtn">Publish</button>
       <button title="More publish options"><svg class="icon"><use href="#i-down"/></svg></button>
@@ -1190,6 +1433,123 @@ Good luck!</textarea>
   <button data-act="time"><svg class="icon"><use href="#i-timer"/></svg>Give extra time</button>
   <button data-act="reset"><svg class="icon"><use href="#i-refresh"/></svg>Reset attempt</button>
   <button data-act="remove" class="danger"><svg class="icon"><use href="#i-trash"/></svg>Remove from exam</button>
+</div>
+
+<!-- ================= Candidate preview ================= -->
+<div class="cp" id="cp" role="dialog" aria-label="Candidate preview">
+  <div class="cp-bar">
+    <svg class="icon"><use href="#i-eye"/></svg>
+    <span>Candidate preview. Nothing you do here is saved.</span>
+    <button class="c-btn outline sm exit" id="cpExit"><svg class="icon"><use href="#i-x"/></svg>Exit preview</button>
+  </div>
+
+  <!-- 1. Welcome -->
+  <div class="cp-screen" id="cpWelcome">
+    <div class="cpw">
+      <div class="cpw-left">
+        <div class="cpw-org"><span class="c-logo">Y</span>Yellow.ai</div>
+        <div class="cpw-hey">Hey <span id="cpName">Alex</span>,</div>
+        <h1 class="cpw-title">Yellow.ai hiring SDE 2</h1>
+        <p class="cpw-desc">An assessment for the Software Development Engineer 2 role. Take it in one sitting.</p>
+        <div class="c-stats">
+          <div><div class="k"><svg class="icon"><use href="#i-clock"/></svg>Duration</div><div class="v" id="cpDur"></div></div>
+          <div><div class="k"><svg class="icon"><use href="#i-list"/></svg>Questions</div><div class="v" id="cpQn"></div></div>
+          <div><div class="k"><svg class="icon"><use href="#i-grid"/></svg>Sections</div><div class="v" id="cpSn"></div></div>
+        </div>
+        <div class="cpw-actions">
+          <button class="c-btn default" id="cpStart">Start exam<svg class="icon"><use href="#i-right"/></svg></button>
+          <button class="c-btn outline" id="cpCheck">Check my system</button>
+        </div>
+      </div>
+      <div class="cpw-right">
+        <div class="c-card">
+          <div class="c-card-h"><h3 class="c-card-t">Before you begin</h3><p class="c-card-d">A few things to set up so the exam goes smoothly.</p></div>
+          <div class="c-card-c">
+            <ol class="cpw-steps">
+              <li><span class="n">1</span>Use a laptop or desktop with a stable internet connection.</li>
+              <li><span class="n">2</span>Keep your camera on and your photo ID nearby.</li>
+              <li><span class="n">3</span>Stay on the exam screen. Leaving it may be flagged.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="c-alert warn"><svg class="icon"><use href="#i-alert"/></svg><div>This is a timed exam. The timer can't be paused once you start.</div></div>
+        <div class="c-card">
+          <div class="c-card-h"><h3 class="c-card-t">About this exam</h3><p class="c-card-d">40 points in total. Results are shared after the team reviews your answers.</p></div>
+          <div class="c-card-c"><div class="cpw-secs" id="cpSecs"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Exam -->
+  <div class="cp-screen" id="cpExam">
+    <div class="x">
+      <header class="x-top">
+        <div class="x-brand"><span class="c-logo">Y</span><div style="min-width:0"><div class="t">Yellow.ai hiring SDE 2</div><div class="d" id="xPos"></div></div></div>
+        <div class="x-right">
+          <div class="x-timer" id="xTimer"><svg class="icon"><use href="#i-clock"/></svg><span id="xTime">60:00</span></div>
+          <button class="c-btn default sm" id="xSubmitTop">Submit</button>
+        </div>
+      </header>
+      <div class="x-body">
+        <aside class="x-rail" id="xRail"></aside>
+        <main class="x-main" id="xMain"></main>
+      </div>
+      <footer class="x-foot">
+        <div><button class="c-btn outline sm" id="xFlag"><svg class="icon"><use href="#i-flag"/></svg><span>Flag for review</span></button></div>
+        <div class="x-hint" id="xHint"></div>
+        <div class="x-nav">
+          <button class="c-btn outline sm" id="xPrev"><svg class="icon"><use href="#i-left"/></svg>Previous</button>
+          <button class="c-btn default sm" id="xNext"></button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- 3. Submitted -->
+  <div class="cp-screen" id="cpDone">
+    <div class="cpd">
+      <div class="c-card">
+        <div class="c-card-h">
+          <span class="cpd-ic"><svg class="icon"><use href="#i-check"/></svg></span>
+          <h3 class="c-card-t" style="margin-top:10px">Exam submitted</h3>
+          <p class="c-card-d">Thanks, <span class="cpNameEcho">Alex</span>. Your answers are saved. The team will be in touch after they review them.</p>
+        </div>
+        <div class="c-card-c">
+          <div class="c-stats">
+            <div><div class="k">Answered</div><div class="v" id="cpDoneAns"></div></div>
+            <div><div class="k">Sections done</div><div class="v" id="cpDoneSec"></div></div>
+            <div><div class="k">Time used</div><div class="v" id="cpDoneTime"></div></div>
+          </div>
+        </div>
+        <div class="c-card-f"><span class="c-label">You can close this window.</span><button class="c-btn outline sm" id="cpDoneExit">Exit preview</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System check -->
+  <div class="overlay" id="cpSys">
+    <div class="modal">
+      <h3>System check</h3>
+      <div class="muted">Make sure your device is ready before you start.</div>
+      <div class="sys-list" id="cpSysList"></div>
+      <div class="hint">This is a preview, so the camera and microphone are not actually turned on.</div>
+      <div class="actions"><button class="c-btn default sm" id="cpSysDone">Done</button></div>
+    </div>
+  </div>
+
+  <!-- Submit confirm -->
+  <div class="overlay" id="cpConfirm">
+    <div class="modal">
+      <h3>Submit your exam?</h3>
+      <div class="muted" id="cpConfirmSub"></div>
+      <div class="x-sum" id="cpConfirmSum"></div>
+      <div class="actions">
+        <button class="c-btn outline sm" id="cpConfirmNo">Keep working</button>
+        <button class="c-btn default sm" id="cpConfirmYes">Submit exam</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"><svg class="icon"><use href="#i-check"/></svg><span id="toastText"></span></div>
@@ -1918,7 +2278,8 @@ Good luck!</textarea>
         '<clipPath id="' + p + 'chF">' + headC(F) + '</clipPath><clipPath id="' + p + 'cbF"><path d="' + F.body + '"/></clipPath>' +
         '<clipPath id="' + p + 'chB">' + headC(B) + '</clipPath><clipPath id="' + p + 'cbB"><path d="' + B.body + '"/></clipPath>' +
         // cut a thin gap around the front person so the back one reads as behind it
-        '<mask id="' + p + 'behind" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><rect width="200" height="200" fill="#fff"/>' +
+        '<mask
+id="' + p + 'behind" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><rect width="200" height="200" fill="#fff"/>' +
           '<circle cx="' + F.hx + '" cy="' + F.hy + '" r="' + (F.hr + 4) + '" fill="#000"/><path d="' + F.body + '" fill="#000" stroke="#000" stroke-width="8" stroke-linejoin="round"/></mask>' +
       "</defs>" +
       // soft matte tile
@@ -2453,7 +2814,395 @@ Good luck!</textarea>
     toast("Exam published");
     renderAll(); renderReview();
   });
-  $("#rvPreview").addEventListener("click", function () { toast("Opens the candidate preview"); });
+  // ---------- Candidate preview ----------
+  var X_CHECK = '<svg class="icon"><use href="#i-check"/></svg>';
+  var X_RIGHT = '<svg class="icon"><use href="#i-right"/></svg>';
+  var X_FLAG = '<svg class="icon"><use href="#i-flag"/></svg>';
+  var X_LANGS = [["python", "Python 3"], ["javascript", "JavaScript"], ["java", "Java"]];
+  var CP_SECTIONS = [
+    { name: "Fundamentals", blurb: "Short questions on core computer science and web basics. Pick an answer or write a line or two.", mins: 15, questions: [
+      { kind: "single", pts: 2, short: "Hash map lookup", title: "What is the average time complexity of looking up a key in a hash map?", options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"] },
+      { kind: "single", pts: 2, short: "Rate limit status", title: "A client sends too many requests in a short time. Which HTTP status code should the API return?", options: ["400 Bad Request", "403 Forbidden", "429 Too Many Requests", "503 Service Unavailable"] },
+      { kind: "multi", pts: 3, short: "Idempotent methods", title: "Which of these HTTP methods are idempotent?", options: ["GET", "POST", "PUT", "DELETE"] },
+      { kind: "short", pts: 3, short: "Cache strategy", title: "When would you choose a write-through cache over a write-back cache?", hint: "Answer in one or two sentences." }
+    ] },
+    { name: "Coding", blurb: "Write and run code in the language you know best. Your latest code is saved when you move on.", mins: 30, questions: [
+      { kind: "code", pts: 10, diff: "Medium", short: "Reverse in groups of k", title: "Reverse a linked list in groups of k",
+        body: "Given the head of a singly linked list and an integer k, reverse the nodes k at a time and return the new head. If fewer than k nodes are left at the end, keep them in their original order.",
+        examples: [{ i: "head = [1, 2, 3, 4, 5], k = 2", o: "[2, 1, 4, 3, 5]" }, { i: "head = [1, 2, 3, 4, 5], k = 3", o: "[3, 2, 1, 4, 5]" }],
+        constraints: ["The list has between 1 and 5000 nodes.", "1 <= k <= number of nodes", "Use O(1) extra memory if you can."],
+        tests: ["[1, 2, 3, 4, 5], k = 2", "[1, 2, 3, 4, 5], k = 3", "[1], k = 1", "Hidden test: 5000 nodes"],
+        starter: {
+          python: "class Solution:\n    def reverse_k_group(self, head, k):\n        # Write your solution here\n        pass\n",
+          javascript: "/**\n * @param {ListNode} head\n * @param {number} k\n * @return {ListNode}\n */\nfunction reverseKGroup(head, k) {\n  // Write your solution here\n}\n",
+          java: "class Solution {\n    public ListNode reverseKGroup(ListNode head, int k) {\n        // Write your solution here\n        return head;\n    }\n}\n"
+        } },
+      { kind: "code", pts: 10, diff: "Medium", short: "Merge intervals", title: "Merge overlapping intervals",
+        body: "Given a list of intervals where each interval is [start, end], merge every pair that overlaps and return the result sorted by start.",
+        examples: [{ i: "[[1, 3], [2, 6], [8, 10], [15, 18]]", o: "[[1, 6], [8, 10], [15, 18]]" }, { i: "[[1, 4], [4, 5]]", o: "[[1, 5]]" }],
+        constraints: ["1 <= number of intervals <= 10^4", "0 <= start <= end <= 10^4"],
+        tests: ["[[1, 3], [2, 6], [8, 10], [15, 18]]", "[[1, 4], [4, 5]]", "[[5, 7]]", "Hidden test: 10,000 intervals"],
+        starter: {
+          python: "class Solution:\n    def merge(self, intervals):\n        # Write your solution here\n        pass\n",
+          javascript: "/**\n * @param {number[][]} intervals\n * @return {number[][]}\n */\nfunction merge(intervals) {\n  // Write your solution here\n}\n",
+          java: "class Solution {\n    public int[][] merge(int[][] intervals) {\n        // Write your solution here\n        return intervals;\n    }\n}\n"
+        } }
+    ] },
+    { name: "Roleplay", blurb: "A live conversation with a customer. Show how you handle a tough moment. You have up to 3 replies.", mins: 15, questions: [
+      { kind: "roleplay", pts: 10, short: "Upset customer", title: "Calm an upset customer after an outage",
+        persona: { name: "Priya Menon", role: "CTO, RetailCo", initials: "PM" },
+        role: "You are a support engineer at Yellow.ai, and you own the RetailCo account this week.",
+        brief: "RetailCo's shopping assistant bot was down for 2 hours during their biggest sale of the year. Priya, their CTO, has asked to talk to you right away.",
+        goals: [
+          { t: "Acknowledge the impact", re: /sorry|apolog|understand|frustrat|impact|hear you/i },
+          { t: "Explain the cause and the fix", re: /cause|because|root|fix|investig|deploy|issue|bug|patch|rollback|roll back/i },
+          { t: "Agree on a follow-up", re: /follow|update|call|report|tomorrow|post.?mortem|share|by (mon|tue|wed|thu|fri|end)/i }
+        ],
+        opening: "Two hours. During our biggest sale of the year, your bot was just gone. Our customers couldn't check their orders and our support queue exploded. What happened?",
+        nudges: [
+          "Do you understand what this cost us? Thousands of customers couldn't reach us at the worst possible time.",
+          "I appreciate that, but what actually happened? And how do I know it won't happen again?",
+          "Okay, that's the first clear answer I've had today. What happens next, and when will I hear from you?"
+        ],
+        good: "Fine. That's what I needed to hear. I'll look out for that update. Thanks for being straight with me.",
+        meh: "I still don't have a clear plan from you. Let's pick this up again with your manager.",
+        maxTurns: 3 }
+    ] }
+  ];
+  var CP_FLAT = [];
+  CP_SECTIONS.forEach(function (s, si) { s.questions.forEach(function (q, qi) { CP_FLAT.push({ s: si, q: qi, d: q }); }); });
+  var cp;
+  function cpReset() { cp = { cur: 0, intro: true, seen: {}, ans: {}, lang: {}, flags: {}, chat: {}, left: DURATION * 60, timer: null }; }
+  cpReset();
+  function secIdx(si) { return CP_FLAT.map(function (f, i) { return f.s === si ? i : -1; }).filter(function (i) { return i >= 0; }); }
+  function secPts(si) { return CP_SECTIONS[si].questions.reduce(function (n, q) { return n + q.pts; }, 0); }
+  function plural(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
+  function cpAnswered(i) {
+    var q = CP_FLAT[i].d, a = cp.ans[i];
+    if (q.kind === "single") return a != null;
+    if (q.kind === "multi") return !!(a && a.length);
+    if (q.kind === "short") return !!(a && a.trim());
+    if (q.kind === "code") return a != null && a.trim() !== "" && a.trim() !== q.starter[cp.lang[i] || "python"].trim();
+    if (q.kind === "roleplay") return !!(cp.chat[i] && cp.chat[i].mine > 0);
+    return false;
+  }
+  function answeredCount(list) { return (list || CP_FLAT.map(function (f, i) { return i; })).filter(cpAnswered).length; }
+  function cpScreen(id) { $$("#cp .cp-screen").forEach(function (s) { s.classList.toggle("show", s.id === id); }); }
+  function fmtClock(s) { s = Math.max(0, s); var m = Math.floor(s / 60), r = s % 60; return (m < 10 ? "0" : "") + m + ":" + (r < 10 ? "0" : "") + r; }
+  function stopTimer() { if (cp.timer) { clearInterval(cp.timer); cp.timer = null; } }
+
+  function openPreview() {
+    stopTimer(); cpReset();
+    var first = audience().list.filter(function (c) { return c.name; })[0];
+    var name = first ? first.name.split(" ")[0] : "Alex";
+    $("#cpName").textContent = name;
+    $$(".cpNameEcho").forEach(function (n) { n.textContent = name; });
+    $("#cpDur").innerHTML = DURATION + " <small>min</small>";
+    $("#cpQn").textContent = CP_FLAT.length;
+    $("#cpSn").textContent = CP_SECTIONS.length;
+    $("#cpSecs").innerHTML = CP_SECTIONS.map(function (s, si) {
+      return '<div class="cpw-sec"><span class="c-badge secondary">Section ' + (si + 1) + '</span><div class="t">' + s.name + '</div><div class="d">' + plural(s.questions.length, "question") + " · about " + s.mins + " min</div></div>";
+    }).join("");
+    cpScreen("cpWelcome");
+    $("#cp").classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+  function closePreview() {
+    stopTimer();
+    $$("#cp .overlay").forEach(function (o) { o.classList.remove("show"); });
+    $("#cp").classList.remove("show");
+    document.body.style.overflow = "";
+  }
+  function tick() {
+    cp.left--;
+    xTimer();
+    if (cp.left <= 0) finishExam();
+  }
+  function xTimer() {
+    var total = DURATION * 60;
+    $("#xTime").textContent = fmtClock(cp.left);
+    $("#xTimer").classList.toggle("low", cp.left <= 300);
+  }
+
+  // ----- exam rendering -----
+  function xRender() { xChrome(); xMain(); }
+  function xChrome() {
+    var f = CP_FLAT[cp.cur], n = CP_FLAT.length;
+    $("#xPos").textContent = "Section " + (f.s + 1) + " of " + CP_SECTIONS.length + " · Question " + (cp.cur + 1) + " of " + n;
+    var rail = CP_SECTIONS.map(function (s, si) {
+      var qs = secIdx(si);
+      return '<div><div class="x-grp-h"><span>' + (si + 1) + ". " + s.name + '</span><span class="cnt">' + answeredCount(qs) + "/" + qs.length + "</span></div>" +
+        qs.map(function (i) {
+          var q = CP_FLAT[i].d;
+          return '<button class="x-item' + (i === cp.cur && !cp.intro ? " cur" : "") + (cpAnswered(i) ? " ans" : "") + (cp.flags[i] ? " flag" : "") + '" data-i="' + i + '"><span class="st">' + X_CHECK + '</span><span class="t">' + esc(q.short) + '</span><span class="fl">' + X_FLAG + '</span><span class="p">' + q.pts + " pts</span></button>";
+        }).join("") + "</div>";
+    }).join("");
+    var a = answeredCount();
+    rail += '<div class="x-rail-foot"><div class="k"><span>Progress</span><b>' + a + " of " + n + ' answered</b></div><div class="c-progress"><span style="width:' + (a / n * 100) + '%"></span></div></div>';
+    $("#xRail").innerHTML = rail;
+    // footer
+    var q = f.d, last = cp.cur === n - 1, nextNewSec = !last && CP_FLAT[cp.cur + 1].s !== f.s;
+    $("#xFlag").style.visibility = cp.intro ? "hidden" : "";
+    $("#xFlag").classList.toggle("on", !!cp.flags[cp.cur]);
+    $("#xFlag").lastChild.textContent = cp.flags[cp.cur] ? "Flagged" : "Flag for review";
+    $("#xPrev").disabled = cp.cur === 0 && cp.intro;
+    $("#xNext").innerHTML = cp.intro ? (f.s === 0 ? "Begin" : "Start section") + X_RIGHT : last ? "Review and submit" + X_CHECK : nextNewSec ? "Next section" + X_RIGHT : "Next" + X_RIGHT;
+    var k = function (t) { return '<kbd class="c-kbd">' + t + "</kbd>"; };
+    $("#xHint").innerHTML = cp.intro ? "" :
+      (q.kind === "single" || q.kind === "multi") ? "<span>" + k("A") + "-" + k("D") + " answer</span><span>" + k("←") + k("→") + " move</span>" :
+      q.kind === "roleplay" ? "<span>" + k("Enter") + " send</span><span>" + k("Shift") + k("Enter") + " new line</span>" :
+      q.kind === "code" ? "<span>" + k("Tab") + " indent</span>" : "<span>" + k("←") + k("→") + " move when not typing</span>";
+  }
+  function eyebrow(f) {
+    var s = CP_SECTIONS[f.s], q = f.d;
+    return '<div class="x-meta"><span class="c-badge outline">Section ' + (f.s + 1) + " · " + s.name + '</span><span class="c-badge secondary">Question ' + (f.q + 1) + " of " + s.questions.length +
+      '</span><span class="c-badge blue">' + q.pts + " pts</span>" + (q.diff ? '<span class="c-badge secondary">' + q.diff + "</span>" : "") + "</div>";
+  }
+  function xMain() {
+    var main = $("#xMain"), f = CP_FLAT[cp.cur], q = f.d, i = cp.cur;
+    main.classList.toggle("full", !cp.intro && (q.kind === "code" || q.kind === "roleplay"));
+    main.scrollTop = 0;
+    if (cp.intro) {
+      var s = CP_SECTIONS[f.s];
+      var qs = secIdx(f.s);
+      main.innerHTML = '<div class="x-intro"><div class="c-card"><div class="c-card-h"><div class="x-meta"><span class="c-badge blue">Section ' + (f.s + 1) + " of " + CP_SECTIONS.length + '</span></div><h2 class="c-card-t" style="font-size:22px; margin-top:6px">' + s.name + '</h2><p class="c-card-d">' + esc(s.blurb) + "</p></div>" +
+        '<div class="c-card-c"><div class="c-stats"><div><div class="k">Questions</div><div class="v">' + s.questions.length + '</div></div><div><div class="k">Suggested time</div><div class="v">' + s.mins + ' <small>min</small></div></div><div><div class="k">Points</div><div class="v">' + secPts(f.s) + "</div></div></div>" +
+        '<div class="x-qlist">' + qs.map(function (i, k) { var q = CP_FLAT[i].d; return '<div><span class="n">' + (k + 1) + '</span><span class="t">' + esc(q.short) + '</span><span class="c-badge secondary">' + q.pts + " pts</span></div>"; }).join("") + "</div></div>" +
+        '<div class="c-card-f"><span class="c-label">Your answers save as you go.</span><button class="c-btn default sm" id="xIntroGo">' + (f.s === 0 ? "Begin" : "Start section") + X_RIGHT + "</button></div></div></div>";
+      $("#xIntroGo").addEventListener("click", xNext);
+      return;
+    }
+    if (q.kind === "single" || q.kind === "multi") {
+      main.innerHTML = '<div class="x-col"><div class="c-card"><div class="c-card-h">' + eyebrow(f) + '<h2 class="c-card-t" style="font-size:20px; margin-top:8px">' + esc(q.title) + '</h2><p class="c-card-d">' + (q.kind === "multi" ? "Select all that apply." : "Choose one answer.") + '</p></div><div class="c-card-c"><div class="x-choices">' +
+        q.options.map(function (o, k) {
+          return '<button class="x-choice' + (q.kind === "multi" ? " multi" : "") + '" data-o="' + k + '"><span class="ind">' + X_CHECK + '</span><span class="txt">' + esc(o) + '</span><kbd class="c-kbd">' + "ABCD"[k] + "</kbd></button>";
+        }).join("") + "</div></div></div></div>";
+      xMarkOpts();
+    } else if (q.kind === "short") {
+      main.innerHTML = '<div class="x-col"><div class="c-card"><div class="c-card-h">' + eyebrow(f) + '<h2 class="c-card-t" style="font-size:20px; margin-top:8px">' + esc(q.title) + '</h2><p class="c-card-d">' + esc(q.hint) + '</p></div><div class="c-card-c"><label class="c-label" for="xShort">Your answer</label><textarea class="c-field" id="xShort" rows="6" style="margin-top:8px" placeholder="Type your answer">' + esc(cp.ans[i] || "") + '</textarea><div class="x-count" id="xCount"></div></div></div></div>';
+      var sh = $("#xShort");
+      var cnt = function () { var w = (sh.value.trim().match(/\S+/g) || []).length; $("#xCount").textContent = plural(w, "word"); };
+      sh.addEventListener("input", function () { cp.ans[i] = sh.value; cnt(); xChrome(); });
+      cnt();
+    } else if (q.kind === "code") {
+      xCodeView(f);
+    } else {
+      xRoleplayView(f);
+    }
+  }
+  function xMarkOpts() {
+    var i = cp.cur, q = CP_FLAT[i].d, a = cp.ans[i];
+    $$("#xMain .x-choice").forEach(function (b) {
+      var k = +b.dataset.o;
+      b.classList.toggle("sel", q.kind === "multi" ? !!(a && a.indexOf(k) !== -1) : a === k);
+    });
+  }
+  function xChoose(k) {
+    var i = cp.cur, q = CP_FLAT[i].d;
+    if (q.kind === "single") cp.ans[i] = k;
+    else { var a = (cp.ans[i] || []).slice(), p = a.indexOf(k); if (p === -1) a.push(k); else a.splice(p, 1); cp.ans[i] = a.sort(); }
+    xMarkOpts(); xChrome();
+  }
+
+  // ----- coding -----
+  function xCodeView(f) {
+    var i = cp.cur, q = f.d, lang = cp.lang[i] || "python";
+    if (cp.ans[i] == null) cp.ans[i] = q.starter[lang];
+    $("#xMain").innerHTML = '<div class="x-split"><section class="c-card"><div class="c-card-h">' + eyebrow(f) + '<h2 class="c-card-t" style="font-size:20px; margin-top:8px">' + esc(q.title) + '</h2></div><div class="x-scroll"><div class="c-card-c x-prob"><p>' + esc(q.body) + "</p>" +
+      q.examples.map(function (e, k) { return '<div class="x-ex"><div class="c-label">Example ' + (k + 1) + "</div><pre><b>Input   </b>" + esc(e.i) + "\n<b>Output  </b>" + esc(e.o) + "</pre></div>"; }).join("") +
+      '<div class="x-ex"><div class="c-label">Constraints</div><ul class="x-cons">' + q.constraints.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul></div></div></div></section>" +
+      '<section class="c-card"><div class="x-ide-h"><div class="c-tabs" id="xLangs">' +
+        X_LANGS.map(function (l) { return '<button class="c-tab' + (l[0] === lang ? " active" : "") + '" data-l="' + l[0] + '">' + l[1] + "</button>"; }).join("") +
+      '</div><div style="display:flex; gap:8px"><button class="c-btn ghost sm" id="xReset"><svg class="icon"><use href="#i-refresh"/></svg>Reset</button><button class="c-btn outline sm" id="xRun"><svg class="icon"><use href="#i-play"/></svg>Run tests</button></div></div>' +
+      '<div class="x-ed"><div class="x-gut" id="xGut"></div><textarea class="x-code" id="xCode" spellcheck="false" wrap="off"></textarea></div>' +
+      '<div class="x-res"><div class="x-res-h"><span class="t">Test results</span><span id="xTestSum" class="c-badge secondary">Not run</span></div><table class="x-table"><thead><tr><th>Case</th><th>Input</th><th class="r">Result</th></tr></thead><tbody id="xTests">' +
+        q.tests.map(function (t, k) { return '<tr data-t="' + k + '"><td>' + (k + 1) + '</td><td class="mono">' + esc(t) + '</td><td class="r">-</td></tr>'; }).join("") +
+      "</tbody></table></div></section></div>";
+    var ta = $("#xCode"), gut = $("#xGut");
+    ta.value = cp.ans[i];
+    var lines = function () { var n = ta.value.split("\n").length, s = ""; for (var k = 1; k <= n; k++) s += k + "\n"; gut.textContent = s; gut.scrollTop = ta.scrollTop; };
+    lines();
+    ta.addEventListener("input", function () { cp.ans[i] = ta.value; lines(); xChrome(); });
+    ta.addEventListener("scroll", function () { gut.scrollTop = ta.scrollTop; });
+    ta.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab") return;
+      e.preventDefault();
+      var s = ta.selectionStart;
+      ta.value = ta.value.slice(0, s) + "    " + ta.value.slice(ta.selectionEnd);
+      ta.selectionStart = ta.selectionEnd = s + 4;
+      cp.ans[i] = ta.value; lines();
+    });
+    $("#xLangs").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-l]"); if (!b) return;
+      var untouched = !cpAnswered(i);
+      cp.lang[i] = b.dataset.l;
+      if (untouched) { cp.ans[i] = q.starter[b.dataset.l]; ta.value = cp.ans[i]; lines(); }
+      $$("#xLangs .c-tab").forEach(function (x) { x.classList.toggle("active", x === b); });
+      xChrome();
+    });
+    $("#xReset").addEventListener("click", function () { cp.ans[i] = q.starter[cp.lang[i] || "python"]; ta.value = cp.ans[i]; lines(); xChrome(); });
+    $("#xRun").addEventListener("click", function () {
+      var sum = $("#xTestSum");
+      if (!cpAnswered(i)) { sum.className = "c-badge amber"; sum.textContent = "Write a solution first"; return; }
+      var rows = $$("#xTests tr");
+      sum.className = "c-badge secondary"; sum.textContent = "Running";
+      rows.forEach(function (r) { r.lastChild.innerHTML = '<span class="x-spin"></span>'; });
+      rows.forEach(function (r, k) {
+        setTimeout(function () {
+          if (!r.isConnected) return;
+          r.lastChild.innerHTML = '<span class="c-badge green">Passed · ' + (8 + k * 6) + " ms</span>";
+          if (k === rows.length - 1) { sum.className = "c-badge green"; sum.textContent = rows.length + " of " + rows.length + " passed"; }
+        }, 420 + k * 320);
+      });
+    });
+  }
+
+  // ----- roleplay -----
+  function xChatState(i) {
+    var q = CP_FLAT[i].d;
+    return cp.chat[i] || (cp.chat[i] = { msgs: [{ who: "them", t: q.opening }], mine: 0, hits: {}, typing: false, done: false });
+  }
+  function xRoleplayView(f) {
+    var i = cp.cur, q = f.d;
+    xChatState(i);
+    $("#xMain").innerHTML = '<div class="x-rp"><section class="c-card"><div class="c-card-h">' + eyebrow(f) + '<h2 class="c-card-t" style="font-size:20px; margin-top:8px">' + esc(q.title) + '</h2></div><div class="x-scroll">' +
+      '<div class="x-brief-sec"><div class="c-label">Your role</div><p>' + esc(q.role) + "</p></div>" +
+      '<div class="x-brief-sec"><div class="c-label">Situation</div><p>' + esc(q.brief) + "</p></div>" +
+      '<div class="x-brief-sec"><div class="c-label">Goals</div><ul class="x-goals" id="xObjs"></ul></div></div></section>' +
+      '<section class="c-card"><div class="x-chat-h"><span class="c-avatar">' + q.persona.initials + '</span><div><div class="nm">' + esc(q.persona.name) + '</div><div class="rl">' + esc(q.persona.role) + '</div></div><span style="margin-left:auto" id="xMood"></span></div>' +
+      '<div class="x-msgs" id="xMsgs"></div>' +
+      '<div class="x-comp"><div class="x-comp-row"><textarea class="c-field" id="xSay" rows="1" placeholder="Type your reply"></textarea><button class="c-btn default" id="xSend"><svg class="icon"><use href="#i-send"/></svg>Send</button></div><div class="x-comp-f"><span>Replies are part of your answer.</span><span id="xLeft"></span></div></div></section></div>';
+    var say = $("#xSay");
+    say.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); xSend(); } });
+    say.addEventListener("input", function () { say.style.height = "auto"; say.style.height = Math.min(140, say.scrollHeight) + "px"; });
+    $("#xSend").addEventListener("click", xSend);
+    xRenderChat();
+  }
+  function xRenderChat() {
+    var i = cp.cur, q = CP_FLAT[i].d, ch = xChatState(i);
+    if (!$("#xMsgs")) return;
+    var av = '<span class="c-avatar">' + q.persona.initials + "</span>";
+    $("#xMsgs").innerHTML = ch.msgs.map(function (m) {
+      return m.who === "me" ? '<div class="x-msg me"><div class="bub">' + esc(m.t) + "</div></div>" : '<div class="x-msg them">' + av + '<div class="bub">' + esc(m.t) + "</div></div>";
+    }).join("") + (ch.typing ? '<div class="x-msg them">' + av + '<div class="bub x-typing"><i></i><i></i><i></i></div></div>' : "") +
+      (ch.done ? '<div class="x-sys">Conversation ended. You can move on when you are ready.</div>' : "");
+    $("#xMsgs").scrollTop = $("#xMsgs").scrollHeight;
+    var hits = q.goals.filter(function (g, k) { return ch.hits[k]; }).length;
+    $("#xObjs").innerHTML = q.goals.map(function (g, k) { return '<li class="' + (ch.hits[k] ? "ok" : "") + '"><span class="ind">' + X_CHECK + "</span>" + esc(g.t) + "</li>"; }).join("");
+    $("#xMood").innerHTML = hits >= 3 ? '<span class="c-badge green">Reassured</span>' : hits === 2 ? '<span class="c-badge amber">Listening</span>' : '<span class="c-badge red">Frustrated</span>';
+    var left = q.maxTurns - ch.mine;
+    $("#xLeft").textContent = ch.done ? "" : plural(left, "reply") + " left";
+    $("#xSay").disabled = ch.done || ch.typing;
+    $("#xSend").disabled = ch.done || ch.typing;
+    $("#xSay").placeholder = ch.done ? "The conversation has ended" : "Type your reply";
+  }
+  function xSend() {
+    var i = cp.cur, q = CP_FLAT[i].d, ch = xChatState(i), say = $("#xSay"), t = say.value.trim();
+    if (!t || ch.done || ch.typing) return;
+    ch.msgs.push({ who: "me", t: t }); ch.mine++;
+    q.goals.forEach(function (g, k) { if (g.re.test(t)) ch.hits[k] = true; });
+    say.value = ""; say.style.height = "";
+    ch.typing = true;
+    xRenderChat(); xChrome();
+    setTimeout(function () {
+      ch.typing = false;
+      var missing = q.goals.map(function (g, k) { return k; }).filter(function (k) { return !ch.hits[k]; });
+      if (!missing.length || ch.mine >= q.maxTurns) { ch.msgs.push({ who: "them", t: missing.length ? q.meh : q.good }); ch.done = true; }
+      else ch.msgs.push({ who: "them", t: q.nudges[missing[0]] });
+      if (cp.cur === i && !cp.intro) { xRenderChat(); if (!ch.done) $("#xSay").focus(); }
+    }, 1300);
+  }
+
+  // ----- navigation -----
+  function xGo(i, viaSection) {
+    cp.cur = Math.max(0, Math.min(CP_FLAT.length - 1, i));
+    var s = CP_FLAT[cp.cur].s;
+    cp.intro = !!viaSection && !cp.seen[s];
+    if (!cp.intro) cp.seen[s] = true;
+    xRender();
+  }
+  function xNext() {
+    var f = CP_FLAT[cp.cur];
+    if (cp.intro) { cp.intro = false; cp.seen[f.s] = true; xRender(); return; }
+    if (cp.cur === CP_FLAT.length - 1) { askSubmit(); return; }
+    var nf = CP_FLAT[cp.cur + 1];
+    cp.cur++;
+    cp.intro = nf.s !== f.s && !cp.seen[nf.s];
+    if (!cp.intro) cp.seen[nf.s] = true;
+    xRender();
+  }
+  function xPrev() {
+    if (cp.intro) { if (cp.cur === 0) return; cp.intro = false; cp.cur--; xRender(); return; }
+    if (cp.cur > 0) { cp.cur--; xRender(); }
+  }
+  function askSubmit() {
+    var n = CP_FLAT.length, a = answeredCount(), fl = Object.keys(cp.flags).filter(function (k) { return cp.flags[k]; }).length;
+    $("#cpConfirmSub").textContent = "You answered " + a + " of " + n + " questions" + (fl ? " and flagged " + fl + " for review" : "") + ". You have " + fmtClock(cp.left) + " left. You can't change your answers after you submit.";
+    $("#cpConfirmSum").innerHTML = CP_SECTIONS.map(function (s, si) { var qs = secIdx(si), d = answeredCount(qs); return "<div><span>" + (si + 1) + ". " + s.name + '</span><span class="c-badge ' + (d === qs.length ? "green" : "secondary") + '">' + d + " of " + qs.length + "</span></div>"; }).join("");
+    $("#cpConfirm").classList.add("show");
+  }
+  function finishExam() {
+    stopTimer();
+    $("#cpConfirm").classList.remove("show");
+    var n = CP_FLAT.length, a = answeredCount();
+    var secs = CP_SECTIONS.filter(function (s, si) { var qs = secIdx(si); return answeredCount(qs) === qs.length; }).length;
+    var used = DURATION * 60 - cp.left;
+    $("#cpDoneAns").textContent = a + " of " + n;
+    $("#cpDoneSec").textContent = secs + " of " + CP_SECTIONS.length;
+    $("#cpDoneTime").textContent = Math.floor(used / 60) + "m " + (used % 60) + "s";
+    cpScreen("cpDone");
+  }
+  function runSystemCheck() {
+    var checks = [["Browser", "Chrome on macOS is supported"], ["Internet connection", "Stable, about 48 Mbps"], ["Camera", "FaceTime HD Camera is ready"], ["Microphone", "Built-in microphone is ready"], ["Screen", "One display detected"]];
+    $("#cpSysList").innerHTML = checks.map(function (c, i) {
+      return '<div class="sys-row"><span class="sys-st wait" id="cpSys' + i + '"></span><div class="meta"><div class="t">' + c[0] + '</div><div class="d" id="cpSysD' + i + '">Checking...</div></div></div>';
+    }).join("");
+    $("#cpSys").classList.add("show");
+    checks.forEach(function (c, i) {
+      setTimeout(function () {
+        var st = $("#cpSys" + i); if (!st) return;
+        st.className = "sys-st ok"; st.innerHTML = X_CHECK;
+        $("#cpSysD" + i).textContent = c[1];
+      }, 450 + i * 380);
+    });
+  }
+
+  $("#previewBtn").addEventListener("click", openPreview);
+  $("#rvPreview").addEventListener("click", openPreview);
+  $("#cpExit").addEventListener("click", closePreview);
+  $("#cpDoneExit").addEventListener("click", closePreview);
+  $("#cpCheck").addEventListener("click", runSystemCheck);
+  $("#cpSysDone").addEventListener("click", function () { $("#cpSys").classList.remove("show"); });
+  $("#cpStart").addEventListener("click", function () {
+    cp.left = DURATION * 60; cp.cur = 0; cp.intro = true; xTimer();
+    stopTimer(); cp.timer = setInterval(tick, 1000);
+    cpScreen("cpExam"); xRender();
+  });
+  $("#xRail").addEventListener("click", function (e) { var b = e.target.closest("[data-i]"); if (b) xGo(+b.dataset.i, false); });
+  $("#xMain").addEventListener("click", function (e) { var b = e.target.closest("[data-o]"); if (b) xChoose(+b.dataset.o); });
+  $("#xNext").addEventListener("click", xNext);
+  $("#xPrev").addEventListener("click", xPrev);
+  $("#xFlag").addEventListener("click", function () { cp.flags[cp.cur] = !cp.flags[cp.cur]; xChrome(); });
+  $("#xSubmitTop").addEventListener("click", askSubmit);
+  $("#cpConfirmNo").addEventListener("click", function () { $("#cpConfirm").classList.remove("show"); });
+  $("#cpConfirmYes").addEventListener("click", finishExam);
+  document.addEventListener("keydown", function (e) {
+    if (!$("#cp").classList.contains("show")) return;
+    var open = $$("#cp .overlay.show");
+    if (e.key === "Escape") { if (open.length) open.forEach(function (o) { o.classList.remove("show"); }); else closePreview(); return; }
+    if (open.length || !$("#cpExam").classList.contains("show")) return;
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "textarea" || tag === "input" || tag === "select" || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); xNext(); return; }
+    if (e.key === "ArrowLeft") { e.preventDefault(); xPrev(); return; }
+    var q = CP_FLAT[cp.cur].d;
+    if (!cp.intro && (q.kind === "single" || q.kind === "multi")) {
+      var k = "abcd".indexOf(e.key.toLowerCase()); if (k === -1) k = "1234".indexOf(e.key);
+      if (k !== -1 && k < q.options.length) { e.preventDefault(); xChoose(k); }
+    }
+  });
+
+
 
 
   // glossy person icon in section 1: black until a group is picked, green once it is
