@@ -116,6 +116,18 @@
     background: var(--green); border: 2px solid var(--panel); opacity: 0; transform: scale(0.6); transition: 0.15s;
   }
   .section.done .sec-icon::after { opacity: 1; transform: scale(1); }
+  /* 3D icon: the SVG draws its own tile; its visible tile at 40px is about 34px, so it lines up with the flat ones */
+  .sec-icon.fancy { background: none; border: 0; }
+  .sec-icon.fancy svg { margin: -3px; display: block; }
+  .sec-icon.fancy::after { display: none; }
+  /* grey until the section is complete, then the green lighting comes on */
+  .lv-ico .on { opacity: 0; transition: opacity 0.6s ease; }
+  .lv-ico .off { opacity: 1; transition: opacity 0.6s ease; }
+  /* when a section becomes set, the green light sweeps in from the top-left */
+  .lv-ico .light { transform: translate(-50px, -14px); transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .section.done .lv-ico .light, .is-done .lv-ico .light { transform: none; }
+  .section.done .lv-ico .on, .is-done .lv-ico .on { opacity: 1; }
+  .section.done .lv-ico .off, .is-done .lv-ico .off { opacity: 0; }
   .section-head h2 { line-height: 1.3; }
 
   /* ---------- Generic controls ---------- */
@@ -262,14 +274,18 @@
   .icon-stage .float { animation: iconFloat 6s ease-in-out infinite; transform-style: preserve-3d; }
   .icon-stage .tilt { transition: transform 0.25s ease-out; will-change: transform; }
   .icon-stage .tilt svg { display: block; }
-  .stage-shadow { width: 170px; height: 18px; margin-top: -4px; border-radius: 50%; background: radial-gradient(closest-side, rgba(62, 207, 110, 0.22), transparent); animation: shadowPulse 6s ease-in-out infinite; }
+  .stage-shadow { width: 170px; height: 18px; margin-top: -4px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, 0.08), transparent); transition: background 0.5s; animation: shadowPulse 6s ease-in-out infinite; }
+  .is-done .stage-shadow { background: radial-gradient(closest-side, rgba(62, 207, 110, 0.25), transparent); }
   @keyframes iconFloat {
     0%, 100% { transform: translateY(0) rotateX(6deg) rotateY(-8deg); }
     50% { transform: translateY(-8px) rotateX(-4deg) rotateY(8deg); }
   }
   @keyframes shadowPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.85); opacity: 0.6; } }
   @media (prefers-reduced-motion: reduce) { .icon-stage .float, .stage-shadow { animation: none; } }
-  .icon-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px 6px; }
+  .icon-stage .float { animation: none; }
+  .stage-shadow { display: none; }
+  .icon-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px 6px; flex-wrap: wrap; }
+  .icon-meta > div:first-child { flex: 1 1 220px; }
   .icon-meta .t { font-weight: 600; }
   .icon-meta .d { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .icon-sizes { display: flex; align-items: flex-end; gap: 22px; padding: 14px 18px 20px; }
@@ -384,6 +400,8 @@
   .kv-row .d { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .kv-row .select { width: 260px; flex-shrink: 0; }
   #accessExtra:empty { display: none; }
+  .select.is-empty { color: var(--faint); }
+  .select option { color: var(--text); }
   #accessExtra { margin-top: -12px; }
   #accessExtra .callout { margin-top: 0; }
   .link-box.big { padding: 8px 8px 8px 14px; }
@@ -434,7 +452,6 @@
   .mode-card .d { color: var(--muted); font-size: 12px; line-height: 1.4; }
   .mode-card .radio { position: absolute; top: 12px; right: 12px; width: 15px; height: 15px; border-radius: 50%; border: 1px solid #4a4a4a; }
   .mode-card.selected .radio { border: 4px solid #ededed; }
-
 
   .mode-panel { display: none; margin-top: 18px; padding: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
   .mode-panel.show { display: block; }
@@ -631,7 +648,7 @@
     <!-- 1. Who -->
     <section class="section" id="secWho">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-users"/></svg></span>
+        <span class="sec-icon fancy" id="whoIcon"></span>
         <div>
           <h2>Who is taking this exam?</h2>
           <p>Choose the groups you want to invite.</p>
@@ -682,7 +699,7 @@
     <!-- 2. Availability -->
     <section class="section" id="secWhen">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-cal"/></svg></span>
+        <span class="sec-icon fancy" id="whenIcon"></span>
         <div>
           <h2>Availability</h2>
           <p>When can candidates take this exam?</p>
@@ -708,7 +725,7 @@
             </div>
           </div>
 
-          <div class="opt selected" data-mode="fixed">
+          <div class="opt" data-mode="fixed">
             <button class="opt-head" type="button"><span class="radio"></span>
               <span><span class="t">Fixed time</span><span class="d">Everyone starts together, like a live sitting</span></span></button>
             <div class="opt-body">
@@ -793,7 +810,7 @@
     <!-- 3. Access & links -->
     <section class="section" id="secAccess">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-lock"/></svg></span>
+        <span class="sec-icon fancy" id="accessIcon"></span>
         <div>
           <h2>Access and links</h2>
           <p>Who can open the exam, and the link to share.</p>
@@ -805,7 +822,8 @@
             <div class="t">Who can open the link</div>
             <div class="d" id="accessDesc"></div>
           </div>
-          <select class="select" id="accessSelect">
+          <select class="select is-empty" id="accessSelect">
+            <option value="" disabled selected>Choose who can open it</option>
             <option value="invite">Invited candidates only</option>
             <option value="domain">Anyone with a company email</option>
             <option value="anyone">Anyone with the link</option>
@@ -858,7 +876,7 @@
     <!-- 4. Invitations -->
     <section class="section" id="secInvite">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-mail"/></svg></span>
+        <span class="sec-icon fancy" id="inviteIcon"></span>
         <div>
           <h2>Invitations</h2>
           <p>Each candidate gets an email with their personal link.</p>
@@ -938,7 +956,7 @@ Good luck!</textarea>
     <!-- 5. Candidates -->
     <section class="section" id="secRoster">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-list"/></svg></span>
+        <span class="sec-icon fancy" id="rosterIcon"></span>
         <div>
           <h2>Candidates</h2>
           <p>Track invites and manage individual candidates.</p>
@@ -1003,9 +1021,9 @@ Good luck!</textarea>
     </section>
 
     <!-- Checks -->
-    <section class="section">
+    <section class="section" id="rvSecChecks">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-check"/></svg></span>
+        <span class="sec-icon fancy" id="rvIcoChecks"></span>
         <div><h2>Checks</h2><p id="rvCheckSub"></p></div>
       </div>
       <div class="section-body rv-body">
@@ -1014,9 +1032,9 @@ Good luck!</textarea>
     </section>
 
     <!-- Details -->
-    <section class="section">
+    <section class="section" id="rvSecDetails">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+        <span class="sec-icon fancy" id="rvIcoDetails"></span>
         <div><h2>Details</h2><p>What candidates see before they start.</p></div>
         <span class="spacer"></span>
         <button class="btn sm" data-goto="details">Edit</button>
@@ -1032,9 +1050,9 @@ Good luck!</textarea>
     </section>
 
     <!-- Questions -->
-    <section class="section">
+    <section class="section" id="rvSecQuestions">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-list"/></svg></span>
+        <span class="sec-icon fancy" id="rvIcoQuestions"></span>
         <div><h2>Questions</h2><p>2 questions &middot; 20 points</p></div>
         <span class="spacer"></span>
         <button class="btn sm" data-goto="questions">Edit</button>
@@ -1048,9 +1066,9 @@ Good luck!</textarea>
     </section>
 
     <!-- Settings -->
-    <section class="section">
+    <section class="section" id="rvSecSettings">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-grid"/></svg></span>
+        <span class="sec-icon fancy" id="rvIcoSettings"></span>
         <div><h2>Settings</h2><p>Timing, integrity and results.</p></div>
         <span class="spacer"></span>
         <button class="btn sm" data-goto="settings">Edit</button>
@@ -1067,9 +1085,9 @@ Good luck!</textarea>
     </section>
 
     <!-- Audience -->
-    <section class="section">
+    <section class="section" id="rvSecAudience">
       <div class="section-head">
-        <span class="sec-icon"><svg class="icon"><use href="#i-users"/></svg></span>
+        <span class="sec-icon fancy" id="rvIcoAudience"></span>
         <div><h2>Audience</h2><p>Who takes it, when, and how they get in.</p></div>
         <span class="spacer"></span>
         <button class="btn sm" data-goto="audience">Edit</button>
@@ -1108,23 +1126,11 @@ Good luck!</textarea>
   <div class="page-head">
     <div>
       <h1>Icons</h1>
-      <p>Matte 3D section icons with animated lighting. Move your cursor over an icon to tilt it.</p>
+      <p>Soft matte tiles with glossy shapes. Black until a section is set, green when it is. Move your cursor over an icon to tilt it.</p>
     </div>
   </div>
   <main class="main" style="grid-column: 1 / -1">
-    <div class="icon-grid">
-      <div class="icon-card">
-        <div class="icon-stage" id="stageAudience"></div>
-        <div class="icon-meta">
-          <div>
-            <div class="t">Audience</div>
-            <div class="d">Section 1 &middot; Who is taking this exam?</div>
-          </div>
-          <button class="btn sm" id="dlAudience"><svg class="icon"><use href="#i-download"/></svg>SVG</button>
-        </div>
-        <div class="icon-sizes" id="sizesAudience"></div>
-      </div>
-    </div>
+    <div class="icon-grid" id="iconGrid"></div>
   </main>
 </div>
 
@@ -1231,8 +1237,8 @@ Good luck!</textarea>
   var state = {
     selected: { b2026: true },
     individuals: [],
-    mode: "fixed",
-    access: "invite",
+    mode: null,
+    access: null,
     domain: "yellow.ai",
     invited: {},      // email -> status
     extra: {},        // email -> minutes
@@ -1512,9 +1518,11 @@ Good luck!</textarea>
       case "fixed": return fmtDate($("#fxDate").value) + ", " + fmtTime(toMins($("#fxStart").value)) + " " + tzShort();
       case "flexible": return fmtDateTime($("#flOpen").value) + " to " + fmtDateTime($("#flClose").value);
       case "slots": return state.slots.length + " bookable slot" + (state.slots.length === 1 ? "" : "s");
+      default: return "Not set";
     }
   }
   function availabilityValid() {
+    if (!state.mode) return false;
     if (state.mode === "flexible") return new Date($("#flClose").value) > new Date($("#flOpen").value);
     if (state.mode === "slots") return state.slots.length > 0;
     if (state.mode === "fixed") return !!$("#fxDate").value && !!$("#fxStart").value;
@@ -1523,7 +1531,7 @@ Good luck!</textarea>
 
   // ---------- 3. Access ----------
   $("#accessSelect").addEventListener("change", function () {
-    state.access = this.value; touchSaved(); renderAll();
+    state.access = this.value; this.classList.remove("is-empty"); touchSaved(); renderAll();
   });
   $("#togglePerson").addEventListener("click", function () {
     var row = $("#personRow"), show = row.hidden;
@@ -1546,7 +1554,8 @@ Good luck!</textarea>
   function renderAccessDesc() {
     $("#accessDesc").textContent = state.access === "domain" ? "Invited candidates, plus anyone who signs in with an @" + state.domain + " email."
       : state.access === "anyone" ? "No sign-in needed. Candidates enter their name and email before starting."
-      : "Candidates sign in with the email you invited.";
+      : state.access === "invite" ? "Candidates sign in with the email you invited."
+      : "Pick who is allowed to open the exam link.";
   }
   function renderPersonSelect(a) {
     var sel = $("#personSelect"), cur = sel.value;
@@ -1646,7 +1655,7 @@ Good luck!</textarea>
   function renderSendBtn(a) {
     var p = pending(a), later = $("#sendWhen").value === "later";
     var btn = $("#sendBtn");
-    btn.disabled = !p.length || !availabilityValid();
+    btn.disabled = !p.length || !availabilityValid() || !state.access;
     if (!a.list.length) $("#sendLabel").textContent = "Send invitations";
     else if (!p.length) $("#sendLabel").textContent = "Everyone is invited";
     else if (Object.keys(state.invited).length) $("#sendLabel").textContent = (later ? "Schedule for " : "Invite ") + p.length + " new";
@@ -1778,6 +1787,7 @@ Good luck!</textarea>
 
   // ---------- Summary ----------
   function accessText() {
+    if (!state.access) return "Not set";
     var t = state.access === "invite" ? "Invited only" : state.access === "domain" ? "@" + state.domain + " emails" : "Anyone with link";
     return t + ($("#codeToggle").checked ? " + access code" : "");
   }
@@ -1797,11 +1807,11 @@ Good luck!</textarea>
         v: a.list.length ? a.list.length + " candidate" + (a.list.length === 1 ? "" : "s") : "No one selected yet",
         d: a.list.length ? "From " + gCount + " group" + (gCount === 1 ? "" : "s") + (ind ? " and " + ind + " by email" : "") : "Pick at least one group" },
       { sec: "#secWhen", k: "Availability", ok: availabilityValid(),
-        v: availabilityValid() ? windowText() : "Needs attention",
-        d: MODE_NAME[state.mode] + " \u00b7 " + DURATION + " min exam" },
-      { sec: "#secAccess", k: "Access", ok: true,
-        v: accessText(),
-        d: "Batch link and personal links ready" },
+        v: availabilityValid() ? windowText() : state.mode ? "Needs attention" : "Not set yet",
+        d: state.mode ? MODE_NAME[state.mode] + " \u00b7 " + DURATION + " min exam" : "Choose when candidates can take it" },
+      { sec: "#secAccess", k: "Access", ok: !!state.access,
+        v: state.access ? accessText() : "Not set yet",
+        d: state.access ? "Batch link and personal links ready" : "Choose who can open the link" },
       { sec: "#secInvite", k: "Invitations", ok: allInvited,
         v: !invitedN ? "Not sent yet" : scheduled === invitedN ? "Scheduled for " + fmtDateTime($("#sendAt").value) : invitedN + " of " + a.list.length + " invited",
         d: !invitedN ? (a.list.length ? a.list.length + " ready to send" : "Waiting for an audience") + (rem ? " \u00b7 " + rem + " reminder" + (rem === 1 ? "" : "s") : "")
@@ -1821,7 +1831,7 @@ Good luck!</textarea>
 
     $("#secWho").classList.toggle("done", a.list.length > 0);
     $("#secWhen").classList.toggle("done", availabilityValid());
-    $("#secAccess").classList.add("done");
+    $("#secAccess").classList.toggle("done", !!state.access);
     $("#secInvite").classList.toggle("done", allInvited);
     $("#secRoster").classList.toggle("done", invitedN > 0);
   }
@@ -1849,110 +1859,498 @@ Good luck!</textarea>
   // ---------- Icons tab ----------
   // 3D glass "people" icon. Each call gets its own id prefix so several sizes can share a page.
   var iconSeq = 0;
-  function audienceIcon(size, opts) {
-    opts = opts || {};
-    var p = "ai" + (iconSeq++) + "-";
+  // Soft matte tile with two solid glossy people: one in front, one half hidden behind (a group).
+  // ".off" = glossy black, ".on" = glossy emerald with a faint green reflection. Page CSS crossfades them.
+  // Never put an opacity attribute on a .on/.off element (page CSS sets opacity there); nest instead.
+  function personIcon(size, label) {
+    var p = "pi" + (iconSeq++) + "-";
     var u = function (id) { return "url(#" + p + id + ")"; };
-    var A = function (s) { return opts.still ? "" : s; };
-    // squircle tile, slightly pillowed
-    var tile = "M100 14 C164 14 186 36 186 100 C186 164 164 186 100 186 C36 186 14 164 14 100 C14 36 36 14 100 14 Z";
-    var front = "M48 150 C48 122 66 108 92 108 C118 108 136 122 136 150 C136 156 132 159 126 159 L58 159 C52 159 48 156 48 150 Z";
-    var back = "M110 101 C134 101 152 113 152 138 C152 143 149 146 144 146 L132 146 C128 125 120 110 106 104 Z";
-    var hue = A('<animate attributeName="stop-color" values="#3ecf6e;#2bd4b8;#5be37f;#3ecf6e" dur="7s" repeatCount="indefinite"/>');
-    function glassLayers(shape, k) {
-      // one glass shape: dark body, coloured base light, moving streaks, specular, rim
-      return '<g clip-path="' + u("c" + k) + '">' +
-        shape("fill=\"" + u("body") + "\"") +
-        shape("fill=\"" + u("base") + "\"") +
-        shape("fill=\"" + u("streaks") + "\" opacity=\"0.55\"") +
-      "</g>" +
-      shape("fill=\"none\" stroke=\"" + u("rimF") + "\" stroke-width=\"1.4\"");
+    var tile = "M60 16 H140 C164 16 184 36 184 60 V140 C184 164 164 184 140 184 H60 C36 184 16 164 16 140 V60 C16 36 36 16 60 16 Z";
+    // front person
+    var F = { hx: 86, hy: 77, hr: 24,
+      body: "M46 153 V144 C46 121 64 109 86 109 C108 109 126 121 126 144 V153 C126 159 122 162 116 162 H56 C50 162 46 159 46 153 Z" };
+    // back person, smaller and to the right; the front person hides about half of it
+    var B = { hx: 128, hy: 69, hr: 19,
+      body: "M98 146 V138 C98 118 112 104 130 104 C148 104 160 117 160 138 V146 C160 151 157 154 152 154 H106 C101 154 98 151 98 146 Z" };
+    function blur(id, sd) { return '<filter id="' + p + id + '" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="' + sd + '"/></filter>'; }
+    function rg(id, cx, cy, r, stops) {
+      return '<radialGradient id="' + p + id + '" cx="' + cx + '" cy="' + cy + '" r="' + r + '">' + stops.map(function (s) {
+        return '<stop offset="' + s[0] + '" stop-color="' + s[1] + '"' + (s[2] != null ? ' stop-opacity="' + s[2] + '"' : "") + "/>";
+      }).join("") + "</radialGradient>";
     }
-    var headF = function (a) { return '<circle cx="92" cy="76" r="23" ' + a + "/>"; };
-    var bodyF = function (a) { return '<path d="' + front + '" ' + a + "/>"; };
-    var headB = function (a) { return '<circle cx="128" cy="72" r="18" ' + a + "/>"; };
-    var bodyB = function (a) { return '<path d="' + back + '" ' + a + "/>"; };
-
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Audience icon">' +
+    // highlight that exists in both looks
+    function hl(shape, offOp, onOp) {
+      return '<g class="off"><g opacity="' + offOp + '">' + shape("#ffffff") + "</g></g>" +
+             '<g class="on"><g opacity="' + onOp + '">' + shape("#f2fff7") + "</g></g>";
+    }
+    function headC(P) { return '<circle cx="' + P.hx + '" cy="' + P.hy + '" r="' + P.hr + '"/>'; }
+    // one glossy person: body, its shading, head, its shading. k scales the highlight sizes.
+    function person(P, id, k) {
+      var cx = P.hx, w = P.hr / 24;
+      return '<path class="off" d="' + P.body + '" fill="' + u("bodyOff") + '"/>' +
+        '<path class="on" d="' + P.body + '" fill="' + u("bodyOn") + '"/>' +
+        '<g clip-path="' + u("cb" + id) + '">' +
+          '<ellipse cx="' + (cx - 26 * w) + '" cy="' + (P.hy + 66 * w) + '" rx="' + 14 * w + '" ry="' + 26 * w + '" fill="#000" opacity="0.45" filter="' + u("b6") + '"/>' +
+          '<ellipse cx="' + (cx + 1) + '" cy="' + (P.hy + 33 * w) + '" rx="' + 23 * w + '" ry="' + 6 * w + '" fill="#000" opacity="0.65" filter="' + u("b3") + '"/>' +
+          hl(function (c) { return '<ellipse cx="' + (cx + 15 * w) + '" cy="' + (P.hy + 58 * w) + '" rx="' + 5 * w + '" ry="' + 21 * w + '" fill="' + c + '" filter="' + u("b3") + '"/>'; }, 0.2 * k, 0.35 * k) +
+          hl(function (c) { return '<path d="' + P.body + '" fill="none" stroke="' + c + '" stroke-width="2.4" filter="' + u("b15") + '"/>'; }, 0.1, 0.16) +
+        "</g>" +
+        '<g class="off">' + headC(P).replace("/>", ' fill="' + u("headOff") + '"/>') + "</g>" +
+        '<g class="on">' + headC(P).replace("/>", ' fill="' + u("headOn") + '"/>') + "</g>" +
+        '<g clip-path="' + u("ch" + id) + '">' +
+          '<ellipse cx="' + (cx - 5 * w) + '" cy="' + (P.hy + 20 * w) + '" rx="' + 22 * w + '" ry="' + 9 * w + '" fill="#000" opacity="0.55" filter="' + u("b4") + '"/>' +
+          hl(function (c) { return '<ellipse cx="' + (cx + 9 * w) + '" cy="' + (P.hy - 10 * w) + '" rx="' + 4.5 * w + '" ry="' + 11 * w + '" fill="' + c + '" transform="rotate(25 ' + (cx + 9 * w) + " " + (P.hy - 10 * w) + ')" filter="' + u("b2") + '"/>'; }, 0.5 * k, 0.7 * k) +
+          hl(function (c) { return '<circle cx="' + cx + '" cy="' + P.hy + '" r="' + (P.hr - 1) + '" fill="none" stroke="' + c + '" stroke-width="1.6" filter="' + u("b15") + '"/>'; }, 0.12, 0.18) +
+        "</g>";
+    }
+    return '<svg class="lv-ico" width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + label + '">' +
       "<defs>" +
-        // matte tile: deep charcoal, soft top-left light, darker rim (pillow bend)
-        '<radialGradient id="' + p + 'tile" cx="0.38" cy="0.28" r="0.9"><stop offset="0" stop-color="#2a2a2c"/><stop offset="0.5" stop-color="#151516"/><stop offset="1" stop-color="#070708"/></radialGradient>' +
-        '<radialGradient id="' + p + 'bend" cx="0.5" cy="0.45" r="0.62"><stop offset="0.6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient>' +
-        '<linearGradient id="' + p + 'topEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.28"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.04"/><stop offset="0.7" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3ecf6e" stop-opacity="0.9">' + hue + "</stop></linearGradient>" +
-        // slow light sweep across the matte surface
-        '<linearGradient id="' + p + 'sweep" x1="0" y1="0" x2="1" y2="1"><stop offset="0.35" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/><stop offset="0.65" stop-color="#fff" stop-opacity="0"/>' +
-          A('<animateTransform attributeName="gradientTransform" type="translate" values="-1 -1; 1 1; -1 -1" dur="9s" repeatCount="indefinite"/>') + "</linearGradient>" +
-        '<radialGradient id="' + p + 'floor" cx="0.5" cy="1" r="0.75"><stop offset="0" stop-color="#3ecf6e" stop-opacity="0.7">' + hue + '</stop><stop offset="0.5" stop-color="#3ecf6e" stop-opacity="0.12">' + hue + '</stop><stop offset="1" stop-color="#3ecf6e" stop-opacity="0"/></radialGradient>' +
-        // glass figure
-        '<radialGradient id="' + p + 'body" cx="0.68" cy="0.22" r="0.95"><stop offset="0" stop-color="#e9e9ee"/><stop offset="0.14" stop-color="#77777d"/><stop offset="0.38" stop-color="#18181b"/><stop offset="1" stop-color="#050506"/></radialGradient>' +
-        '<linearGradient id="' + p + 'base" x1="0" y1="0" x2="0" y2="1"><stop offset="0.5" stop-color="#3ecf6e" stop-opacity="0">' + hue + '</stop><stop offset="0.85" stop-color="#3ecf6e" stop-opacity="0.55">' + hue + '</stop><stop offset="1" stop-color="#b9ffd2" stop-opacity="0.95"/></linearGradient>' +
-        '<linearGradient id="' + p + 'rimF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.85"/><stop offset="0.45" stop-color="#fff" stop-opacity="0.12"/><stop offset="1" stop-color="#7dffb0" stop-opacity="0.9"/></linearGradient>' +
-        '<pattern id="' + p + 'streaks" width="26" height="200" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">' +
-          '<rect x="0" width="2.5" height="200" fill="#fff" fill-opacity="0.55"/><rect x="9" width="1" height="200" fill="#fff" fill-opacity="0.3"/><rect x="16" width="4" height="200" fill="#fff" fill-opacity="0.18"/>' +
-          A('<animateTransform attributeName="patternTransform" type="translate" from="0 0" to="26 0" dur="3.2s" additive="sum" repeatCount="indefinite"/>') +
-        "</pattern>" +
-        // matte grain: fine noise + soft mottling
-        '<filter id="' + p + 'grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="4" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.13 0"/></filter>' +
-        '<filter id="' + p + 'mottle" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.09 0"/></filter>' +
-        '<filter id="' + p + 'b10" x="-60%" y="-250%" width="220%" height="600%"><feGaussianBlur stdDeviation="10"/></filter>' +
-        '<filter id="' + p + 'b6" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>' +
-        '<filter id="' + p + 'b2" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="1.6"/></filter>' +
-        '<filter id="' + p + 'shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#000" flood-opacity="0.85"/></filter>' +
+        rg("tile", 0.72, 0.22, 1, [[0, "#343437"], [0.5, "#262628"], [1, "#1b1b1c"]]) +
+        '<linearGradient id="' + p + 'rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.12"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.02"/><stop offset="1" stop-color="#fff" stop-opacity="0.07"/></linearGradient>' +
+        rg("headOff", 0.64, 0.3, 0.85, [[0, "#2c2c2e"], [0.45, "#0c0c0d"], [1, "#030303"]]) +
+        rg("bodyOff", 0.64, 0.12, 1, [[0, "#272729"], [0.5, "#0b0b0c"], [1, "#030303"]]) +
+        rg("headOn", 0.64, 0.3, 0.85, [[0, "#5fdc93"], [0.35, "#1f9f55"], [0.75, "#0a5229"], [1, "#03200f"]]) +
+        rg("bodyOn", 0.64, 0.12, 1, [[0, "#54d088"], [0.35, "#1b9550"], [0.75, "#094d26"], [1, "#03200f"]]) +
+        rg("glow", 0.5, 0.5, 0.5, [[0, "#3ecf6e", 0.5], [1, "#3ecf6e", 0]]) +
+        blur("b15", 1.5) + blur("b2", 2.2) + blur("b3", 3) + blur("b4", 4) + blur("b6", 6) + blur("b10", 10) +
+        '<filter id="' + p + 'shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.55"/></filter>' +
         '<clipPath id="' + p + 'clip"><path d="' + tile + '"/></clipPath>' +
-        '<clipPath id="' + p + 'cF">' + headF("") + bodyF("") + "</clipPath>" +
-        '<clipPath id="' + p + 'cB">' + headB("") + bodyB("") + "</clipPath>" +
-        // cut the back person where the front one overlaps
-        '<mask id="' + p + 'cut" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><rect width="200" height="200" fill="#fff"/>' +
-          '<circle cx="92" cy="76" r="28" fill="#000"/><path d="' + front + '" fill="#000" stroke="#000" stroke-width="10" stroke-linejoin="round"/></mask>' +
+        '<clipPath id="' + p + 'chF">' + headC(F) + '</clipPath><clipPath id="' + p + 'cbF"><path d="' + F.body + '"/></clipPath>' +
+        '<clipPath id="' + p + 'chB">' + headC(B) + '</clipPath><clipPath id="' + p + 'cbB"><path d="' + B.body + '"/></clipPath>' +
+        // cut a thin gap around the front person so the back one reads as behind it
+        '<mask id="' + p + 'behind" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><rect width="200" height="200" fill="#fff"/>' +
+          '<circle cx="' + F.hx + '" cy="' + F.hy + '" r="' + (F.hr + 4) + '" fill="#000"/><path d="' + F.body + '" fill="#000" stroke="#000" stroke-width="8" stroke-linejoin="round"/></mask>' +
       "</defs>" +
-      // tile body
+      // soft matte tile
       '<path d="' + tile + '" fill="' + u("tile") + '" filter="' + u("shadow") + '"/>' +
       '<g clip-path="' + u("clip") + '">' +
-        '<rect width="200" height="200" filter="' + u("mottle") + '"/>' +
-        '<rect width="200" height="200" filter="' + u("grain") + '"/>' +
-        '<rect y="90" width="200" height="110" fill="' + u("floor") + '">' + A('<animate attributeName="opacity" values="0.55;1;0.55" dur="4.5s" repeatCount="indefinite"/>') + "</rect>" +
-        '<rect width="200" height="200" fill="' + u("sweep") + '"/>' +
-        '<path d="' + tile + '" fill="' + u("bend") + '"/>' +
-        // inner shadow + top inner highlight for the pillow bend
-        '<path d="' + tile + '" fill="none" stroke="#000" stroke-width="16" opacity="0.6" filter="' + u("b6") + '"/>' +
-        '<path d="' + tile + '" fill="none" stroke="#fff" stroke-width="3" opacity="0.12" filter="' + u("b2") + '" transform="translate(0 2)"/>' +
-        // light pool under the figures
-        '<ellipse cx="98" cy="166" rx="58" ry="10" fill="#3ecf6e" filter="' + u("b10") + '">' +
-          A('<animate attributeName="opacity" values="0.35;0.75;0.35" dur="4.5s" repeatCount="indefinite"/><animate attributeName="fill" values="#3ecf6e;#2bd4b8;#5be37f;#3ecf6e" dur="7s" repeatCount="indefinite"/>') + "</ellipse>" +
+        '<path d="' + tile + '" fill="none" stroke="#000" stroke-width="12" opacity="0.35" filter="' + u("b6") + '"/>' +
+        // green light reflected on the tile under the people
+        '<g class="on"><g class="light"><ellipse cx="104" cy="150" rx="66" ry="26" fill="' + u("glow") + '" opacity="0.55" filter="' + u("b10") + '"/></g></g>' +
       "</g>" +
-      '<path d="' + tile + '" fill="none" stroke="' + u("topEdge") + '" stroke-width="1.4"/>' +
-      // figures
-      '<g mask="' + u("cut") + '" opacity="0.72">' + glassLayers(function (a) { return headB(a) + bodyB(a); }, "B") + "</g>" +
-      glassLayers(function (a) { return headF(a) + bodyF(a); }, "F") +
-      // specular highlights (top-right light)
-      '<ellipse cx="101" cy="64" rx="9" ry="5" fill="#fff" opacity="0.8" filter="' + u("b2") + '" transform="rotate(35 101 64)"/>' +
-      '<ellipse cx="116" cy="121" rx="14" ry="4" fill="#fff" opacity="0.45" filter="' + u("b2") + '" transform="rotate(32 116 121)"/>' +
-      '<ellipse cx="135" cy="62" rx="6" ry="3.5" fill="#fff" opacity="0.4" filter="' + u("b2") + '" transform="rotate(35 135 62)"/>' +
+      '<path d="' + tile + '" fill="none" stroke="' + u("rim") + '" stroke-width="1.3"/>' +
+      // contact shadows
+      '<ellipse cx="132" cy="156" rx="28" ry="5" fill="#000" opacity="0.5" filter="' + u("b4") + '"/>' +
+      '<ellipse cx="86" cy="164" rx="42" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      // back person (a little dimmer), then the front person
+      '<g mask="' + u("behind") + '"><g opacity="0.82">' + person(B, "B", 0.8) + "</g></g>" +
+      person(F, "F", 1) +
     "</svg>";
   }
+  // Calendar icon in the same style: soft matte tile, glossy calendar with binder rings and an inset page.
+  // ".off" = glossy black, ".on" = glossy emerald. Never put an opacity attribute on a .on/.off element.
+  function calendarIcon(size, label) {
+    var p = "ci" + (iconSeq++) + "-";
+    var u = function (id) { return "url(#" + p + id + ")"; };
+    var tile = "M60 16 H140 C164 16 184 36 184 60 V140 C184 164 164 184 140 184 H60 C36 184 16 164 16 140 V60 C16 36 36 16 60 16 Z";
+    var frame = '<rect x="44" y="58" width="112" height="102" rx="18"/>';
+    var page = '<rect x="58" y="82" width="84" height="64" rx="9"/>';
+    var rings = [72, 91, 109, 128];
+    function blur(id, sd) { return '<filter id="' + p + id + '" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="' + sd + '"/></filter>'; }
+    function grad(tag, id, attrs, stops) {
+      return "<" + tag + ' id="' + p + id + '" ' + attrs + ">" + stops.map(function (s) {
+        return '<stop offset="' + s[0] + '" stop-color="' + s[1] + '"' + (s[2] != null ? ' stop-opacity="' + s[2] + '"' : "") + "/>";
+      }).join("") + "</" + tag + ">";
+    }
+    function both(offEl, onEl) { return '<g class="off">' + offEl + '</g><g class="on">' + onEl + "</g>"; }
+    function hl(shape, offOp, onOp) {
+      return '<g class="off"><g opacity="' + offOp + '">' + shape("#ffffff") + "</g></g>" +
+             '<g class="on"><g opacity="' + onOp + '">' + shape("#f2fff7") + "</g></g>";
+    }
+    var fill = function (el, id) { return el.replace("/>", ' fill="' + u(id) + '"/>'); };
+    var ring = function (x, attrs) { return '<rect x="' + (x - 4.5) + '" y="44" width="9" height="36" rx="4.5" ' + attrs + "/>"; };
+    return '<svg class="lv-ico" width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + label + '">' +
+      "<defs>" +
+        grad("radialGradient", "tile", 'cx="0.72" cy="0.22" r="1"', [[0, "#343437"], [0.5, "#262628"], [1, "#1b1b1c"]]) +
+        grad("linearGradient", "rim", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#fff", 0.12], [0.5, "#fff", 0.02], [1, "#fff", 0.07]]) +
+        grad("radialGradient", "frameOff", 'cx="0.68" cy="0.12" r="1.05"', [[0, "#2a2a2c"], [0.5, "#0c0c0d"], [1, "#030303"]]) +
+        grad("radialGradient", "frameOn", 'cx="0.68" cy="0.12" r="1.05"', [[0, "#54d088"], [0.35, "#1b9550"], [0.75, "#094d26"], [1, "#03200f"]]) +
+        grad("linearGradient", "pageOff", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#161618"], [1, "#222225"]]) +
+        grad("linearGradient", "pageOn", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#07210f"], [1, "#0d3a1d"]]) +
+        grad("linearGradient", "numOn", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#9ef5c0"], [1, "#2fb862"]]) +
+        grad("linearGradient", "ringOff", 'x1="0" y1="0" x2="1" y2="0"', [[0, "#050505"], [0.35, "#3a3a3d"], [0.6, "#0e0e0f"], [1, "#030303"]]) +
+        grad("linearGradient", "ringOn", 'x1="0" y1="0" x2="1" y2="0"', [[0, "#03200f"], [0.35, "#66e59d"], [0.6, "#157a3c"], [1, "#031a0c"]]) +
+        grad("radialGradient", "glow", 'cx="0.5" cy="0.5" r="0.5"', [[0, "#3ecf6e", 0.5], [1, "#3ecf6e", 0]]) +
+        blur("b1", 1) + blur("b15", 1.5) + blur("b2", 2.2) + blur("b3", 3) + blur("b4", 4) + blur("b6", 6) + blur("b10", 10) +
+        '<filter id="' + p + 'shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.55"/></filter>' +
+        '<clipPath id="' + p + 'clip"><path d="' + tile + '"/></clipPath>' +
+        '<clipPath id="' + p + 'cFrame">' + frame + "</clipPath>" +
+        '<clipPath id="' + p + 'cPage">' + page + "</clipPath>" +
+      "</defs>" +
+      // soft matte tile
+      '<path d="' + tile + '" fill="' + u("tile") + '" filter="' + u("shadow") + '"/>' +
+      '<g clip-path="' + u("clip") + '">' +
+        '<path d="' + tile + '" fill="none" stroke="#000" stroke-width="12" opacity="0.35" filter="' + u("b6") + '"/>' +
+        '<g class="on"><g class="light"><ellipse cx="100" cy="152" rx="66" ry="26" fill="' + u("glow") + '" opacity="0.55" filter="' + u("b10") + '"/></g></g>' +
+      "</g>" +
+      '<path d="' + tile + '" fill="none" stroke="' + u("rim") + '" stroke-width="1.3"/>' +
+      // contact shadow
+      '<ellipse cx="100" cy="163" rx="54" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      // glossy frame
+      both(fill(frame, "frameOff"), fill(frame, "frameOn")) +
+      '<g clip-path="' + u("cFrame") + '">' +
+        '<ellipse cx="48" cy="120" rx="12" ry="44" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        hl(function (c) { return '<path d="M52 72 V140 C52 148 56 152 64 152 H138" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.35, 0.5) +
+        hl(function (c) { return '<path d="M118 64 H140 C147 64 150 67 150 74 V96" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.22, 0.35) +
+      "</g>" +
+      // inset page with a shadow at its top edge
+      both(fill(page, "pageOff"), fill(page, "pageOn")) +
+      '<g clip-path="' + u("cPage") + '">' +
+        '<rect x="58" y="82" width="84" height="64" rx="9" fill="none" stroke="#000" stroke-width="8" opacity="0.6" filter="' + u("b3") + '" transform="translate(0 3)"/>' +
+      "</g>" +
+      // date number, slightly raised off the page
+      '<text x="100" y="133" text-anchor="middle" font-family="Inter, -apple-system, Segoe UI, Roboto, sans-serif" font-size="40" font-weight="600" letter-spacing="-1" fill="#000" opacity="0.7" filter="' + u("b1") + '" transform="translate(1 2)">31</text>' +
+      both('<text x="100" y="133" text-anchor="middle" font-family="Inter, -apple-system, Segoe UI, Roboto, sans-serif" font-size="40" font-weight="600" letter-spacing="-1" fill="#3c3c40">31</text>',
+           '<text x="100" y="133" text-anchor="middle" font-family="Inter, -apple-system, Segoe UI, Roboto, sans-serif" font-size="40" font-weight="600" letter-spacing="-1" fill="' + u("numOn") + '">31</text>') +
+      // binder rings over the top edge
+      rings.map(function (x) { return '<g opacity="0.65" filter="' + u("b2") + '">' + ring(x + 1.5, 'fill="#000"').replace('y="44"', 'y="47"') + "</g>"; }).join("") +
+      rings.map(function (x) { return both(ring(x, 'fill="' + u("ringOff") + '"'), ring(x, 'fill="' + u("ringOn") + '"')); }).join("") +
+      hl(function (c) { return rings.map(function (x) { return '<path d="M' + (x - 1.6) + ' 49 V75" stroke="' + c + '" stroke-width="1.4" stroke-linecap="round" filter="' + u("b1") + '"/>'; }).join(""); }, 0.45, 0.6) +
+    "</svg>";
+  }
+  // Padlock icon in the same style: soft matte tile, glossy tube shackle, glossy body with an inset keyhole.
+  // ".off" = glossy black, ".on" = glossy emerald. Never put an opacity attribute on a .on/.off element.
+  function lockIcon(size, label) {
+    var p = "li" + (iconSeq++) + "-";
+    var u = function (id) { return "url(#" + p + id + ")"; };
+    var tile = "M60 16 H140 C164 16 184 36 184 60 V140 C184 164 164 184 140 184 H60 C36 184 16 164 16 140 V60 C16 36 36 16 60 16 Z";
+    var shackle = "M72 104 V80 C72 61 84 48 100 48 C116 48 128 61 128 80 V104";
+    var bodyEl = '<rect x="54" y="94" width="92" height="70" rx="15"/>';
+    var key = "M100 113 C105.5 113 109 116.6 109 121.5 C109 124.6 107.4 127 105 128.4 L106.6 141 C106.9 143.3 105.3 145 103 145 H97 C94.7 145 93.1 143.3 93.4 141 L95 128.4 C92.6 127 91 124.6 91 121.5 C91 116.6 94.5 113 100 113 Z";
+    function blur(id, sd) { return '<filter id="' + p + id + '" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="' + sd + '"/></filter>'; }
+    function grad(tag, id, attrs, stops) {
+      return "<" + tag + ' id="' + p + id + '" ' + attrs + ">" + stops.map(function (s) {
+        return '<stop offset="' + s[0] + '" stop-color="' + s[1] + '"' + (s[2] != null ? ' stop-opacity="' + s[2] + '"' : "") + "/>";
+      }).join("") + "</" + tag + ">";
+    }
+    function both(offEl, onEl) { return '<g class="off">' + offEl + '</g><g class="on">' + onEl + "</g>"; }
+    function hl(shape, offOp, onOp) {
+      return '<g class="off"><g opacity="' + offOp + '">' + shape("#ffffff") + "</g></g>" +
+             '<g class="on"><g opacity="' + onOp + '">' + shape("#f2fff7") + "</g></g>";
+    }
+    var arc = function (w, attrs, dx, dy) {
+      return '<path d="' + shackle + '" fill="none" stroke-linecap="round" stroke-width="' + w + '" ' + attrs +
+        (dx || dy ? ' transform="translate(' + (dx || 0) + " " + (dy || 0) + ')"' : "") + "/>";
+    };
+    return '<svg class="lv-ico" width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + label + '">' +
+      "<defs>" +
+        grad("radialGradient", "tile", 'cx="0.72" cy="0.22" r="1"', [[0, "#343437"], [0.5, "#262628"], [1, "#1b1b1c"]]) +
+        grad("linearGradient", "rim", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#fff", 0.12], [0.5, "#fff", 0.02], [1, "#fff", 0.07]]) +
+        grad("radialGradient", "bodyOff", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#2a2a2c"], [0.5, "#0c0c0d"], [1, "#030303"]]) +
+        grad("radialGradient", "bodyOn", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#54d088"], [0.35, "#1b9550"], [0.75, "#094d26"], [1, "#03200f"]]) +
+        grad("linearGradient", "shOn", 'gradientUnits="userSpaceOnUse" x1="64" y1="0" x2="136" y2="0"', [[0, "#063a1c"], [0.3, "#3ad77c"], [0.55, "#16934a"], [1, "#05301a"]]) +
+        grad("linearGradient", "shOff", 'gradientUnits="userSpaceOnUse" x1="64" y1="0" x2="136" y2="0"', [[0, "#030303"], [0.3, "#2a2a2d"], [0.55, "#0d0d0e"], [1, "#030303"]]) +
+        grad("radialGradient", "glow", 'cx="0.5" cy="0.5" r="0.5"', [[0, "#3ecf6e", 0.5], [1, "#3ecf6e", 0]]) +
+        blur("b06", 0.6) + blur("b1", 1) + blur("b15", 1.5) + blur("b2", 2) + blur("b3", 3) + blur("b4", 4) + blur("b6", 6) + blur("b10", 10) +
+        '<filter id="' + p + 'shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.55"/></filter>' +
+        '<clipPath id="' + p + 'clip"><path d="' + tile + '"/></clipPath>' +
+        '<clipPath id="' + p + 'cBody">' + bodyEl + "</clipPath>" +
+        '<clipPath id="' + p + 'cKey"><path d="' + key + '"/></clipPath>' +
+        '<mask id="' + p + 'mSh" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">' + arc(14, 'stroke="#fff"') + "</mask>" +
+      "</defs>" +
+      // soft matte tile
+      '<path d="' + tile + '" fill="' + u("tile") + '" filter="' + u("shadow") + '"/>' +
+      '<g clip-path="' + u("clip") + '">' +
+        '<path d="' + tile + '" fill="none" stroke="#000" stroke-width="12" opacity="0.35" filter="' + u("b6") + '"/>' +
+        '<g class="on"><g class="light"><ellipse cx="100" cy="154" rx="64" ry="26" fill="' + u("glow") + '" opacity="0.55" filter="' + u("b10") + '"/></g></g>' +
+      "</g>" +
+      '<path d="' + tile + '" fill="none" stroke="' + u("rim") + '" stroke-width="1.3"/>' +
+      // glossy tube shackle (behind the body)
+      '<g opacity="0.55" filter="' + u("b3") + '">' + arc(15, 'stroke="#000"', 1.5, 4) + "</g>" +
+      both(arc(14, 'stroke="' + u("shOff") + '"'), arc(14, 'stroke="' + u("shOn") + '"')) +
+      '<g mask="' + u("mSh") + '">' +
+        hl(function (c) { return '<g filter="' + u("b2") + '">' + arc(6, 'stroke="' + c + '"', -1.2, -2.4) + "</g>"; }, 0.14, 0.3) +
+        hl(function (c) { return '<g filter="' + u("b06") + '">' + arc(1.8, 'stroke="' + c + '"', -1.8, -3.6) + "</g>"; }, 0.55, 0.7) +
+      "</g>" +
+      // contact shadows
+      '<ellipse cx="100" cy="166" rx="48" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      '<rect x="64" y="96" width="72" height="8" rx="4" fill="#000" opacity="0.5" filter="' + u("b3") + '"/>' +
+      // glossy body
+      both(bodyEl.replace("/>", ' fill="' + u("bodyOff") + '"/>'), bodyEl.replace("/>", ' fill="' + u("bodyOn") + '"/>')) +
+      '<g clip-path="' + u("cBody") + '">' +
+        '<ellipse cx="56" cy="134" rx="12" ry="34" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        hl(function (c) { return '<path d="M62 106 V148 C62 153 65 156 70 156 H130" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.32, 0.5) +
+        hl(function (c) { return '<path d="M70 99 H131 C137 99 140 102 141 107" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.22, 0.35) +
+        hl(function (c) { return '<ellipse cx="124" cy="128" rx="4.5" ry="20" fill="' + c + '" filter="' + u("b3") + '"/>'; }, 0.16, 0.3) +
+      "</g>" +
+      // inset keyhole: light catch on its lower edge, dark hole, shadow from the top
+      '<path d="' + key + '" fill="#fff" opacity="0.1" transform="translate(0.6 1.4)"/>' +
+      both('<path d="' + key + '" fill="#030303"/>', '<path d="' + key + '" fill="#021108"/>') +
+      '<g clip-path="' + u("cKey") + '"><path d="' + key + '" fill="none" stroke="#000" stroke-width="5" opacity="0.8" filter="' + u("b15") + '" transform="translate(0 2)"/></g>' +
+    "</svg>";
+  }
+  // Shared pieces for the glossy section icons below (envelope, candidate list).
+  function glossKit(prefix) {
+    var p = prefix + (iconSeq++) + "-";
+    var k = { p: p };
+    k.u = function (id) { return "url(#" + p + id + ")"; };
+    k.tile = "M60 16 H140 C164 16 184 36 184 60 V140 C184 164 164 184 140 184 H60 C36 184 16 164 16 140 V60 C16 36 36 16 60 16 Z";
+    k.blur = function (id, sd) { return '<filter id="' + p + id + '" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="' + sd + '"/></filter>'; };
+    k.grad = function (tag, id, attrs, stops) {
+      return "<" + tag + ' id="' + p + id + '" ' + attrs + ">" + stops.map(function (s) {
+        return '<stop offset="' + s[0] + '" stop-color="' + s[1] + '"' + (s[2] != null ? ' stop-opacity="' + s[2] + '"' : "") + "/>";
+      }).join("") + "</" + tag + ">";
+    };
+    k.both = function (offEl, onEl) { return '<g class="off">' + offEl + '</g><g class="on">' + onEl + "</g>"; };
+    k.hl = function (shape, offOp, onOp) {
+      return '<g class="off"><g opacity="' + offOp + '">' + shape("#ffffff") + "</g></g>" +
+             '<g class="on"><g opacity="' + onOp + '">' + shape("#f2fff7") + "</g></g>";
+    };
+    // common defs: tile, rim, glossy black / emerald object fills, glow, blurs, shadow, tile clip
+    k.defs = function () {
+      return k.grad("radialGradient", "tile", 'cx="0.72" cy="0.22" r="1"', [[0, "#343437"], [0.5, "#262628"], [1, "#1b1b1c"]]) +
+        k.grad("linearGradient", "rim", 'x1="0" y1="0" x2="0" y2="1"', [[0, "#fff", 0.12], [0.5, "#fff", 0.02], [1, "#fff", 0.07]]) +
+        k.grad("radialGradient", "objOff", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#2a2a2c"], [0.5, "#0c0c0d"], [1, "#030303"]]) +
+        k.grad("radialGradient", "objOn", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#54d088"], [0.35, "#1b9550"], [0.75, "#094d26"], [1, "#03200f"]]) +
+        k.grad("radialGradient", "backOff", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#1c1c1e"], [0.6, "#080809"], [1, "#020202"]]) +
+        k.grad("radialGradient", "backOn", 'cx="0.68" cy="0.1" r="1.05"', [[0, "#2f9d5c"], [0.45, "#0f5a2d"], [1, "#021a0c"]]) +
+        k.grad("radialGradient", "glow", 'cx="0.5" cy="0.5" r="0.5"', [[0, "#3ecf6e", 0.5], [1, "#3ecf6e", 0]]) +
+        k.blur("b06", 0.6) + k.blur("b1", 1) + k.blur("b15", 1.5) + k.blur("b2", 2) + k.blur("b3", 3) + k.blur("b4", 4) + k.blur("b6", 6) + k.blur("b10", 10) +
+        '<filter id="' + p + 'shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.55"/></filter>' +
+        '<clipPath id="' + p + 'clip"><path d="' + k.tile + '"/></clipPath>';
+    };
+    // matte tile with the green floor reflection; floorY moves the reflection under the object
+    k.tileLayers = function (floorY) {
+      var u = k.u;
+      return '<path d="' + k.tile + '" fill="' + u("tile") + '" filter="' + u("shadow") + '"/>' +
+        '<g clip-path="' + u("clip") + '">' +
+          '<path d="' + k.tile + '" fill="none" stroke="#000" stroke-width="12" opacity="0.35" filter="' + u("b6") + '"/>' +
+          '<g class="on"><g class="light"><ellipse cx="100" cy="' + floorY + '" rx="66" ry="26" fill="' + u("glow") + '" opacity="0.55" filter="' + u("b10") + '"/></g></g>' +
+        "</g>" +
+        '<path d="' + k.tile + '" fill="none" stroke="' + u("rim") + '" stroke-width="1.3"/>';
+    };
+    k.open = function (size, label) { return '<svg class="lv-ico" width="' + size + '" height="' + size + '" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + label + '">'; };
+    // a dark recess cut into a glossy surface: light catch below, dark fill, shadow from the top edge
+    k.inset = function (shapeD, id) {
+      var u = k.u;
+      return '<path d="' + shapeD + '" fill="#fff" opacity="0.1" transform="translate(0.5 1.3)"/>' +
+        k.both('<path d="' + shapeD + '" fill="#040405"/>', '<path d="' + shapeD + '" fill="#03140a"/>') +
+        '<g clip-path="' + u(id) + '"><path d="' + shapeD + '" fill="none" stroke="#000" stroke-width="5" opacity="0.8" filter="' + u("b15") + '" transform="translate(0 2)"/></g>';
+    };
+    return k;
+  }
+  function rr(x, y, w, h, r) {
+    return "M" + (x + r) + " " + y + " H" + (x + w - r) + " A" + r + " " + r + " 0 0 1 " + (x + w) + " " + (y + r) +
+      " V" + (y + h - r) + " A" + r + " " + r + " 0 0 1 " + (x + w - r) + " " + (y + h) +
+      " H" + (x + r) + " A" + r + " " + r + " 0 0 1 " + x + " " + (y + h - r) + " V" + (y + r) + " A" + r + " " + r + " 0 0 1 " + (x + r) + " " + y + " Z";
+  }
+
+  // Envelope: glossy back panel, raised front pocket with a V fold.
+  function mailIcon(size, label) {
+    var k = glossKit("mi"), u = k.u;
+    var back = rr(40, 60, 120, 86, 15);
+    var pocket = "M40 80 L100 120 L160 80 V131 C160 139.3 153.3 146 145 146 H55 C46.7 146 40 139.3 40 131 Z";
+    var fold = "M46 76 L100 112 L154 76";
+    return k.open(size, label) +
+      "<defs>" + k.defs() +
+        '<clipPath id="' + k.p + 'cBack"><path d="' + back + '"/></clipPath>' +
+        '<clipPath id="' + k.p + 'cPocket"><path d="' + pocket + '"/></clipPath>' +
+      "</defs>" +
+      k.tileLayers(150) +
+      '<ellipse cx="100" cy="150" rx="56" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      // back panel with the top flap line
+      k.both('<path d="' + back + '" fill="' + u("backOff") + '"/>', '<path d="' + back + '" fill="' + u("backOn") + '"/>') +
+      '<g clip-path="' + u("cBack") + '">' +
+        k.hl(function (c) { return '<path d="' + rr(43, 63, 114, 80, 12.5) + '" fill="none" stroke="' + c + '" stroke-width="1.6" filter="' + u("b1") + '"/>'; }, 0.16, 0.25) +
+        '<g opacity="0.55" filter="' + u("b2") + '"><path d="' + fold + '" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>' +
+        k.hl(function (c) { return '<path d="' + fold + '" fill="none" stroke="' + c + '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -2.2)" filter="' + u("b06") + '"/>'; }, 0.2, 0.3) +
+        // shadow the pocket casts upward onto the back panel
+        '<g opacity="0.7" filter="' + u("b3") + '"><path d="' + pocket + '" fill="#000" transform="translate(0 -3)"/></g>' +
+      "</g>" +
+      // raised front pocket
+      k.both('<path d="' + pocket + '" fill="' + u("objOff") + '"/>', '<path d="' + pocket + '" fill="' + u("objOn") + '"/>') +
+      '<g clip-path="' + u("cPocket") + '">' +
+        '<ellipse cx="42" cy="122" rx="12" ry="30" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M42 82 L100 121 L158 82" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="' + u("b1") + '"/>'; }, 0.45, 0.6) +
+        k.hl(function (c) { return '<path d="M47 98 V131 C47 136 50 139 55 139 H140" fill="none" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.28, 0.45) +
+        k.hl(function (c) { return '<ellipse cx="136" cy="118" rx="4.5" ry="16" fill="' + c + '" transform="rotate(-12 136 118)" filter="' + u("b3") + '"/>'; }, 0.14, 0.28) +
+      "</g>" +
+    "</svg>";
+  }
+
+  // Candidate list: glossy card with three rows (avatar + name bar) cut into it.
+  function rosterIcon(size, label) {
+    var k = glossKit("ri"), u = k.u;
+    var card = rr(46, 40, 108, 122, 18);
+    var rows = [70, 100, 130];
+    var insetDefs = rows.map(function (y, i) {
+      return '<clipPath id="' + k.p + 'cA' + i + '"><circle cx="74" cy="' + y + '" r="9"/></clipPath>' +
+             '<clipPath id="' + k.p + 'cL' + i + '"><path d="' + rr(92, y - 5, 44, 10, 5) + '"/></clipPath>';
+    }).join("");
+    var circleD = function (y) { return "M74 " + (y - 9) + " A9 9 0 1 1 73.99 " + (y - 9) + " Z"; };
+    return k.open(size, label) +
+      "<defs>" + k.defs() + '<clipPath id="' + k.p + 'cCard"><path d="' + card + '"/></clipPath>' + insetDefs + "</defs>" +
+      k.tileLayers(156) +
+      '<ellipse cx="100" cy="166" rx="50" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      k.both('<path d="' + card + '" fill="' + u("objOff") + '"/>', '<path d="' + card + '" fill="' + u("objOn") + '"/>') +
+      '<g clip-path="' + u("cCard") + '">' +
+        '<ellipse cx="48" cy="112" rx="12" ry="44" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M54 56 V145 C54 150 57 154 63 154 H138" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.32, 0.5) +
+        k.hl(function (c) { return '<path d="M66 45 H135 C142 45 147 48 148 56" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.22, 0.35) +
+        k.hl(function (c) { return '<ellipse cx="142" cy="100" rx="4" ry="26" fill="' + c + '" filter="' + u("b3") + '"/>'; }, 0.12, 0.25) +
+      "</g>" +
+      rows.map(function (y, i) { return k.inset(circleD(y), "cA" + i) + k.inset(rr(92, y - 5, 44, 10, 5), "cL" + i); }).join("") +
+    "</svg>";
+  }
+  // Review: checks badge (round badge with a check cut into it)
+  function checkIcon(size, label) {
+    var k = glossKit("ki"), u = k.u;
+    var badge = '<circle cx="100" cy="100" r="54"/>';
+    var tick = "M76 101 L93 118 L126 84";
+    return k.open(size, label) +
+      "<defs>" + k.defs() + '<clipPath id="' + k.p + 'cB">' + badge + "</clipPath>" +
+        '<mask id="' + k.p + 'mT" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><path d="' + tick + '" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></mask></defs>' +
+      k.tileLayers(150) +
+      '<ellipse cx="100" cy="160" rx="44" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      k.both(badge.replace("/>", ' fill="' + u("objOff") + '"/>'), badge.replace("/>", ' fill="' + u("objOn") + '"/>')) +
+      '<g clip-path="' + u("cB") + '">' +
+        '<ellipse cx="56" cy="112" rx="14" ry="40" fill="#000" opacity="0.45" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M58 124 A50 50 0 0 0 124 146" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.32, 0.5) +
+        k.hl(function (c) { return '<ellipse cx="122" cy="66" rx="12" ry="5" fill="' + c + '" transform="rotate(35 122 66)" filter="' + u("b3") + '"/>'; }, 0.3, 0.5) +
+      "</g>" +
+      // check mark cut into the badge
+      '<path d="' + tick + '" fill="none" stroke="#fff" stroke-opacity="0.1" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" transform="translate(0.5 1.4)"/>' +
+      k.both('<path d="' + tick + '" fill="none" stroke="#040405" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>',
+             '<path d="' + tick + '" fill="none" stroke="#03140a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>') +
+      '<g mask="' + u("mT") + '"><g opacity="0.85" filter="' + u("b15") + '"><path d="' + tick + '" fill="none" stroke="#000" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1 -3)"/></g></g>' +
+    "</svg>";
+  }
+
+  // Review: details (a page with a folded corner and text lines cut into it)
+  function docIcon(size, label) {
+    var k = glossKit("di"), u = k.u;
+    var sheet = "M66 40 H118 L146 68 V146 C146 155 140 161 131 161 H66 C57 161 51 155 51 146 V55 C51 46 57 40 66 40 Z";
+    var fold = "M118 40 V60 C118 65 121 68 126 68 H146 Z";
+    var lines = [[66, 88, 56], [66, 108, 64], [66, 128, 42]];
+    var defs = lines.map(function (l, i) { return '<clipPath id="' + k.p + 'cL' + i + '"><path d="' + rr(l[0], l[1] - 5, l[2], 10, 5) + '"/></clipPath>'; }).join("");
+    return k.open(size, label) +
+      "<defs>" + k.defs() + '<clipPath id="' + k.p + 'cS"><path d="' + sheet + '"/></clipPath>' + defs + "</defs>" +
+      k.tileLayers(154) +
+      '<ellipse cx="98" cy="165" rx="46" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      k.both('<path d="' + sheet + '" fill="' + u("objOff") + '"/>', '<path d="' + sheet + '" fill="' + u("objOn") + '"/>') +
+      '<g clip-path="' + u("cS") + '">' +
+        '<ellipse cx="52" cy="112" rx="12" ry="44" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M58 56 V145 C58 150 61 154 67 154 H132" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.32, 0.5) +
+        k.hl(function (c) { return '<ellipse cx="136" cy="112" rx="4" ry="26" fill="' + c + '" filter="' + u("b3") + '"/>'; }, 0.12, 0.25) +
+        // the fold casts a soft shadow on the sheet
+        '<g opacity="0.6" filter="' + u("b3") + '"><path d="' + fold + '" fill="#000" transform="translate(-3 4)"/></g>' +
+      "</g>" +
+      k.both('<path d="' + fold + '" fill="' + u("backOff") + '"/>', '<path d="' + fold + '" fill="' + u("backOn") + '"/>') +
+      k.hl(function (c) { return '<path d="M120 46 V60 C120 64 122 66 126 66 H140" fill="none" stroke="' + c + '" stroke-width="1.6" stroke-linecap="round" filter="' + u("b1") + '"/>'; }, 0.3, 0.45) +
+      lines.map(function (l, i) { return k.inset(rr(l[0], l[1] - 5, l[2], 10, 5), "cL" + i); }).join("") +
+    "</svg>";
+  }
+
+  // Review: questions (speech bubble with a question mark cut into it)
+  function questionIcon(size, label) {
+    var k = glossKit("qi"), u = k.u;
+    var bubble = "M64 44 H136 C150 44 160 54 160 68 V118 C160 132 150 142 136 142 H96 L72 162 C69 164.5 65 162.5 65.5 158.6 L68 142 H64 C50 142 40 132 40 118 V68 C40 54 50 44 64 44 Z";
+    var q = "M86 80 C86 70 92 64 100 64 C108 64 114 70 114 78 C114 86 108 89 104 92 C101 94 100 96 100 101";
+    return k.open(size, label) +
+      "<defs>" + k.defs() + '<clipPath id="' + k.p + 'cQ"><path d="' + bubble + '"/></clipPath>' +
+        '<clipPath id="' + k.p + 'cDot"><circle cx="100" cy="122" r="7"/></clipPath>' +
+        '<mask id="' + k.p + 'mQ" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><path d="' + q + '" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/></mask></defs>' +
+      k.tileLayers(150) +
+      '<ellipse cx="100" cy="160" rx="50" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      k.both('<path d="' + bubble + '" fill="' + u("objOff") + '"/>', '<path d="' + bubble + '" fill="' + u("objOn") + '"/>') +
+      '<g clip-path="' + u("cQ") + '">' +
+        '<ellipse cx="42" cy="100" rx="12" ry="40" fill="#000" opacity="0.4" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M47 76 V118 C47 128 54 135 64 135 H136" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.32, 0.5) +
+        k.hl(function (c) { return '<path d="M70 49 H136 C146 49 153 54 155 62" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.22, 0.35) +
+      "</g>" +
+      '<path d="' + q + '" fill="none" stroke="#fff" stroke-opacity="0.1" stroke-width="12" stroke-linecap="round" transform="translate(0.5 1.4)"/>' +
+      k.both('<path d="' + q + '" fill="none" stroke="#040405" stroke-width="12" stroke-linecap="round"/>', '<path d="' + q + '" fill="none" stroke="#03140a" stroke-width="12" stroke-linecap="round"/>') +
+      '<g mask="' + u("mQ") + '"><g opacity="0.85" filter="' + u("b15") + '"><path d="' + q + '" fill="none" stroke="#000" stroke-width="12" stroke-linecap="round" transform="translate(-1 -3)"/></g></g>' +
+      k.inset("M100 115 A7 7 0 1 1 99.99 115 Z", "cDot") +
+    "</svg>";
+  }
+
+  // Review: settings (gear with a hole cut through the middle)
+  function gearIcon(size, label) {
+    var k = glossKit("gi"), u = k.u;
+    var n = 8, R = 56, r = 45, d = "";
+    for (var i = 0; i < n; i++) {
+      var a = (i / n) * Math.PI * 2 - Math.PI / 2, w = Math.PI / n;
+      var pts = [[a - w * 0.62, r], [a - w * 0.36, R], [a + w * 0.36, R], [a + w * 0.62, r], [a + w * 1.38, r]];
+      pts.forEach(function (pt, j) {
+        var x = (100 + pt[1] * Math.cos(pt[0])).toFixed(1), y = (100 + pt[1] * Math.sin(pt[0])).toFixed(1);
+        d += (i === 0 && j === 0 ? "M" : "L") + x + " " + y + " ";
+      });
+    }
+    d += "Z";
+    var hole = "M100 82 A18 18 0 1 1 99.99 82 Z";
+    return k.open(size, label) +
+      "<defs>" + k.defs() + '<clipPath id="' + k.p + 'cG"><path d="' + d + '"/></clipPath><clipPath id="' + k.p + 'cH"><path d="' + hole + '"/></clipPath></defs>' +
+      k.tileLayers(152) +
+      '<ellipse cx="100" cy="162" rx="44" ry="6" fill="#000" opacity="0.6" filter="' + u("b4") + '"/>' +
+      k.both('<path d="' + d + '" fill="' + u("objOff") + '" stroke="' + u("objOff") + '" stroke-width="6" stroke-linejoin="round"/>',
+             '<path d="' + d + '" fill="' + u("objOn") + '" stroke="' + u("objOn") + '" stroke-width="6" stroke-linejoin="round"/>') +
+      '<g clip-path="' + u("cG") + '">' +
+        '<ellipse cx="54" cy="112" rx="14" ry="40" fill="#000" opacity="0.45" filter="' + u("b6") + '"/>' +
+        k.hl(function (c) { return '<path d="M62 122 A42 42 0 0 0 122 140" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" filter="' + u("b15") + '"/>'; }, 0.3, 0.45) +
+        k.hl(function (c) { return '<ellipse cx="124" cy="70" rx="11" ry="5" fill="' + c + '" transform="rotate(35 124 70)" filter="' + u("b3") + '"/>'; }, 0.28, 0.45) +
+      "</g>" +
+      k.inset(hole, "cH") +
+    "</svg>";
+  }
+
+  function audienceIcon(size) { return personIcon(size, "Audience icon"); }
+  var ICONS = [
+    { key: "audience", name: "Audience", sub: "Section 1 \u00b7 Who is taking this exam?", make: function (n) { return audienceIcon(n); } },
+    { key: "availability", name: "Availability", sub: "Section 2 \u00b7 When can candidates take this exam?", make: function (n) { return calendarIcon(n, "Availability icon"); } },
+    { key: "access", name: "Access and links", sub: "Section 3 \u00b7 Who can open the exam", make: function (n) { return lockIcon(n, "Access icon"); } },
+    { key: "invitations", name: "Invitations", sub: "Section 4 \u00b7 Emails with personal links", make: function (n) { return mailIcon(n, "Invitations icon"); } },
+    { key: "candidates", name: "Candidates", sub: "Section 5 \u00b7 Everyone in this exam", make: function (n) { return rosterIcon(n, "Candidates icon"); } },
+    { key: "checks", name: "Checks", sub: "Review \u00b7 Ready to publish", make: function (n) { return checkIcon(n, "Checks icon"); } },
+    { key: "details", name: "Details", sub: "Review \u00b7 Exam details", make: function (n) { return docIcon(n, "Details icon"); } },
+    { key: "questions", name: "Questions", sub: "Review \u00b7 Question set", make: function (n) { return questionIcon(n, "Questions icon"); } },
+    { key: "settings", name: "Settings", sub: "Review \u00b7 Exam settings", make: function (n) { return gearIcon(n, "Settings icon"); } }
+  ];
   function renderIcons() {
-    if ($("#stageAudience").childElementCount) return;
-    $("#stageAudience").innerHTML = '<div class="float"><div class="tilt">' + audienceIcon(230) + '</div></div><div class="stage-shadow"></div>';
+    if ($("#iconGrid").childElementCount) return;
+    $("#iconGrid").innerHTML = ICONS.map(function (ic) {
+      return '<div class="icon-card" data-ico="' + ic.key + '">' +
+        '<div class="icon-stage"><div class="float"><div class="tilt">' + ic.make(230) + "</div></div></div>" +
+        '<div class="icon-meta"><div><div class="t">' + ic.name + '</div><div class="d">' + ic.sub + "</div></div>" +
+          '<div style="display:flex; gap:8px; align-items:center">' +
+            '<div class="steps"><button class="step-tab active" data-s="off">Not set</button><button class="step-tab" data-s="on">All set</button></div>' +
+            '<button class="btn sm" data-dl="' + ic.key + '"><svg class="icon"><use href="#i-download"/></svg>SVG</button>' +
+          "</div></div>" +
+        '<div class="icon-sizes">' + [96, 64, 40].map(function (n) {
+          return '<div class="sz"><div class="sz-box">' + ic.make(n) + "</div><span>" + n + "px</span></div>";
+        }).join("") + "</div></div>";
+    }).join("");
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       $$("#iconsView svg").forEach(function (svg) { if (svg.pauseAnimations) svg.pauseAnimations(); });
     }
-    $("#sizesAudience").innerHTML = [96, 64, 40].map(function (n) {
-      return '<div class="sz"><div class="sz-box">' + audienceIcon(n) + '</div><span>' + n + "px</span></div>";
-    }).join("");
   }
-  // gentle 3D tilt on hover
-  $("#stageAudience").addEventListener("mousemove", function (e) {
-    var r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    $(".tilt", this).style.transform = "perspective(700px) rotateY(" + (x * 18) + "deg) rotateX(" + (-y * 18) + "deg)";
+  // gentle tilt on hover
+  $("#iconGrid").addEventListener("mousemove", function (e) {
+    var st = e.target.closest(".icon-stage"); if (!st) return;
+    var r = st.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    $(".tilt", st).style.transform = "perspective(700px) rotateY(" + (x * 18) + "deg) rotateX(" + (-y * 18) + "deg)";
   });
-  $("#stageAudience").addEventListener("mouseleave", function () { $(".tilt", this).style.transform = ""; });
-  $("#dlAudience").addEventListener("click", function () {
-    var blob = new Blob([audienceIcon(512)], { type: "image/svg+xml" });
+  $("#iconGrid").addEventListener("mouseleave", function () { $$("#iconGrid .tilt").forEach(function (t) { t.style.transform = ""; }); }, true);
+  $("#iconGrid").addEventListener("click", function (e) {
+    var card = e.target.closest(".icon-card"); if (!card) return;
+    var b = e.target.closest("[data-s]");
+    if (b) {
+      $$(".steps .step-tab", card).forEach(function (t) { t.classList.toggle("active", t === b); });
+      card.classList.toggle("is-done", b.dataset.s === "on");
+      return;
+    }
+    var d = e.target.closest("[data-dl]"); if (!d) return;
+    var ic = ICONS.filter(function (x) { return x.key === d.dataset.dl; })[0];
+    var tmp = document.createElement("div"); tmp.innerHTML = ic.make(512);
+    var svg = tmp.firstChild, on = card.classList.contains("is-done");
+    $$(on ? ".off" : ".on", svg).forEach(function (n) { n.remove(); });
+    var name = "leveled-" + ic.key + "-icon.svg";
+    var blob = new Blob([svg.outerHTML], { type: "image/svg+xml" });
     var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob); a.download = "leveled-audience-icon.svg";
+    a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-    toast("Downloaded leveled-audience-icon.svg");
+    toast("Downloaded " + name);
   });
 
   // ---------- Review ----------
@@ -1963,7 +2361,8 @@ Good luck!</textarea>
     c.push({ s: "ok", t: "Settings saved", d: "Proctoring and ID check are on." });
     if (!a.list.length) c.push({ s: "block", t: "No candidates selected", d: "Pick at least one group.", go: "audience" });
     else c.push({ s: "ok", t: a.list.length + " candidates selected", d: "From " + Object.keys(state.selected).length + " group(s)." });
-    if (!availabilityValid()) c.push({ s: "block", t: "Availability needs attention", d: "Check the dates in Availability.", go: "audience" });
+    if (!state.access) c.push({ s: "block", t: "Access not set", d: "Choose who can open the exam link.", go: "audience" });
+    if (!availabilityValid()) c.push({ s: "block", t: state.mode ? "Availability needs attention" : "Availability not set", d: state.mode ? "Check the dates in Availability." : "Choose when candidates can take the exam.", go: "audience" });
     else c.push({ s: "ok", t: "Availability set", d: windowText() + "." });
     if (state.mode === "slots") {
       var seats = state.slots.reduce(function (n, x) { return n + (+x.seats || 0); }, 0);
@@ -1994,6 +2393,10 @@ Good luck!</textarea>
         '<div class="meta"><div class="t">' + esc(c.t) + '</div><div class="d">' + esc(c.d) + "</div></div>" +
         (c.go && c.s !== "ok" ? '<button class="link-btn" data-goto="' + c.go + '">Fix</button>' : "") + "</div>";
     }).join("");
+    // section icons on the Review tab: green when that part is ready
+    $("#rvSecChecks").classList.toggle("done", !blocks);
+    ["#rvSecDetails", "#rvSecQuestions", "#rvSecSettings"].forEach(function (id) { $(id).classList.add("done"); });
+    $("#rvSecAudience").classList.toggle("done", a.list.length > 0 && availabilityValid() && !!state.access);
     $("#rvCheckSub").textContent = blocks ? blocks + " issue" + (blocks === 1 ? "" : "s") + " to fix before publishing" : warns ? "Ready, with " + warns + " thing" + (warns === 1 ? "" : "s") + " to look at" : "Everything looks good";
 
     var groupNames = Object.keys(state.selected).map(function (id) { return byId(id).name; });
@@ -2001,7 +2404,7 @@ Good luck!</textarea>
     var kv = [
       ["Groups", groupNames.length ? groupNames.join(", ") : "None"],
       ["Candidates", a.list.length + (state.individuals.length ? " (incl. " + state.individuals.filter(validEmail).length + " by email)" : "")],
-      ["Availability", MODE_NAME[state.mode] + " \u00b7 " + windowText()],
+      ["Availability", state.mode ? MODE_NAME[state.mode] + " \u00b7 " + windowText() : "Not set"],
       ["Access", accessText()],
       ["Invitation email", $("#subject").value],
       ["Reminders", rem.length ? rem.join(", ") : "None"]
@@ -2013,7 +2416,7 @@ Good luck!</textarea>
       ["Exam is live", "Candidates can open their links " + (state.mode === "always" ? "now" : "when it opens") + "."],
       ["Invitations sent", a.list.length + " candidates have their personal link."]
     ] : [
-      ["Exam goes live", state.mode === "always" ? "Candidates can start right away." : "Opens " + windowText() + "."],
+      ["Exam goes live", !state.mode ? "Choose availability first." : state.mode === "always" ? "Candidates can start right away." : "Opens " + windowText() + "."],
       [pend ? "Invitations go out" : "Invitations already sent", pend ? pend + " candidate" + (pend === 1 ? "" : "s") + " get their personal link by email." : "Everyone already has their link."],
       ["Reminders scheduled", rem.length ? rem.join(" and ") + "." : "No reminders are set."],
       ["Questions lock", "You can still edit settings, but not questions, once someone starts."]
@@ -2051,6 +2454,19 @@ Good luck!</textarea>
     renderAll(); renderReview();
   });
   $("#rvPreview").addEventListener("click", function () { toast("Opens the candidate preview"); });
+
+
+  // glossy person icon in section 1: black until a group is picked, green once it is
+  $("#whoIcon").innerHTML = audienceIcon(40);
+  $("#whenIcon").innerHTML = calendarIcon(40, "Availability icon");
+  $("#accessIcon").innerHTML = lockIcon(40, "Access icon");
+  $("#inviteIcon").innerHTML = mailIcon(40, "Invitations icon");
+  $("#rosterIcon").innerHTML = rosterIcon(40, "Candidates icon");
+  $("#rvIcoChecks").innerHTML = checkIcon(40, "Checks icon");
+  $("#rvIcoDetails").innerHTML = docIcon(40, "Details icon");
+  $("#rvIcoQuestions").innerHTML = questionIcon(40, "Questions icon");
+  $("#rvIcoSettings").innerHTML = gearIcon(40, "Settings icon");
+  $("#rvIcoAudience").innerHTML = audienceIcon(40);
 
   // ---------- Render ----------
   function renderAll() {
